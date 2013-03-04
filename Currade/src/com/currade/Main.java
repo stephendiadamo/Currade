@@ -37,12 +37,12 @@ public class Main extends FragmentActivity implements ActionBar.TabListener {
 	private CourseListingAdapter adapter;
 	private ListView courseListView;
 	List<Course> allCourses;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		
+
 		super.onCreate(savedInstanceState);
-		
+
 		final ActionBar actionBar = getActionBar();
 		actionBar.setDisplayShowTitleEnabled(false);
 		actionBar.setDisplayShowHomeEnabled(false);
@@ -57,27 +57,27 @@ public class Main extends FragmentActivity implements ActionBar.TabListener {
 		mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
 			@Override
 			public void onPageSelected(int position) {
-				if (position == 0){
-					setContentView(R.layout.courses_page);
+				if (position == 0) {
+					//setContentView(R.layout.courses_page);
 					SetAdapterFillCourses();
 				} else {
 					setContentView(R.layout.tasks_page);
 				}
 			}
 		});
-		
+
 		// Do this on first load
 		dbh = new DBHandler(this);
 		allCourses = dbh.getAllCourses();
 		SetAdapterFillCourses();
 		setAdapterListeners();
-		
+
 		ActionBar.Tab coursesTab = actionBar.newTab().setText("Courses");
 		ActionBar.Tab tasksTab = actionBar.newTab().setText("Tasks");
-		
+
 		coursesTab.setTabListener(this);
 		tasksTab.setTabListener(this);
-		
+
 		actionBar.addTab(coursesTab);
 		actionBar.addTab(tasksTab);
 	}
@@ -121,10 +121,10 @@ public class Main extends FragmentActivity implements ActionBar.TabListener {
 			// below) with the page number as its lone argument.
 
 			Fragment frag = new Fragment();
-			if (position == 0){
+			if (position == 0) {
 				frag = new CoursesPage();
-			} else if (position == 1){
-				frag =  new TasksPage();
+			} else if (position == 1) {
+				frag = new TasksPage();
 			}
 			return frag;
 		}
@@ -148,11 +148,11 @@ public class Main extends FragmentActivity implements ActionBar.TabListener {
 			return null;
 		}
 	}
-	
-	private void SetAdapterFillCourses(){
+
+	private void SetAdapterFillCourses() {
 		setContentView(R.layout.courses_page);
-		courseListView = (ListView)findViewById(R.id.courseListView);
-		adapter = new CourseListingAdapter(this, R.layout.course_row, allCourses);	
+		courseListView = (ListView) findViewById(R.id.courseListView);
+		adapter = new CourseListingAdapter(this, R.layout.course_row, allCourses);
 		courseListView.setAdapter(adapter);
 	}
 
@@ -160,15 +160,15 @@ public class Main extends FragmentActivity implements ActionBar.TabListener {
 		courseListView.setOnItemLongClickListener(new OnItemLongClickListener() {
 			@Override
 			public boolean onItemLongClick(AdapterView<?> av, View view, final int pos, long id) {
-				
-				DialogInterface.OnClickListener diaClickListener = new DialogInterface.OnClickListener(){
+
+				DialogInterface.OnClickListener diaClickListener = new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						switch(which){
+						switch (which) {
 						case DialogInterface.BUTTON_POSITIVE:
 							dbh.deleteCourse(getCourseFromPos(pos));
 							removeFromCourses(pos);
-					        adapter.notifyDataSetChanged();
+							adapter.notifyDataSetChanged();
 							break;
 						default:
 							break;
@@ -183,12 +183,12 @@ public class Main extends FragmentActivity implements ActionBar.TabListener {
 				return true;
 			}
 		});
-		
+
 		courseListView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> av, View view, int pos, long id) {
-				
+
 				Intent intent = new Intent(view.getContext(), CourseDetailsActivity.class);
 				Course c = getCourseFromPos(pos);
 				intent.putExtra("COURSE_ID", c.getId());
@@ -196,28 +196,27 @@ public class Main extends FragmentActivity implements ActionBar.TabListener {
 				intent.putExtra("COURSE_NAME", c.getCourseName());
 				startActivity(intent);
 			}
-			
+
 		});
-		
-		
+
 	}
-	
-	private Course getCourseFromPos(int pos){
+
+	private Course getCourseFromPos(int pos) {
 		return allCourses.get(pos);
 	}
-	
-	private void removeFromCourses(int pos){
+
+	private void removeFromCourses(int pos) {
 		allCourses.remove(pos);
 	}
-	
+
 	// Course fragment actions
-	public void onClickCourse(View v){
+	public void onClickCourse(View v) {
 		switch (v.getId()) {
 		case R.id.addNewCourse:
 			final Dialog dialog = new Dialog(this);
 			dialog.setContentView(R.layout.add_course);
 			dialog.setTitle("Add Course");
-			
+
 			Button cancelCourse = (Button) dialog.findViewById(R.id.cancelAddCourseButton);
 			cancelCourse.setOnClickListener(new OnClickListener() {
 				@Override
@@ -225,22 +224,22 @@ public class Main extends FragmentActivity implements ActionBar.TabListener {
 					dialog.dismiss();
 				}
 			});
-			
+
 			Button addCourse = (Button) dialog.findViewById(R.id.addCourseButton);
 			addCourse.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
 					EditText courseCode = (EditText) dialog.findViewById(R.id.courseCodeInputText);
 					EditText courseName = (EditText) dialog.findViewById(R.id.courseNameInputText);
-					
-					if(!courseCode.getText().toString().isEmpty()){
+
+					if (!courseCode.getText().toString().isEmpty()) {
 						Course course = new Course();
 						course.setCourseCode(courseCode.getText().toString());
 						course.setCourseName(courseName.getText().toString());
-						course.setCurrentMark(0);					
+						course.setCurrentMark(0);
 						dbh.addCourse(course);
 						allCourses.add(course);
-				        adapter.notifyDataSetChanged();
+						adapter.notifyDataSetChanged();
 						dialog.dismiss();
 					} else {
 						Toast.makeText(v.getContext(), "Please add a course code.", Toast.LENGTH_LONG).show();

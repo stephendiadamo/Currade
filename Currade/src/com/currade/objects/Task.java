@@ -5,18 +5,14 @@ public class Task {
 	private int id;
 	private String name;
 	private String dueDate;
-	private String type;
 	private String forWhatCourse;
 	private float weight;
-	
-	public Task(int id, String name, String dueDate, String type, String forWhatCourse){
-		this.id = id;
-		this.name = name;
-		this.dueDate = dueDate;
-		this.type = type;
-		this.forWhatCourse = forWhatCourse;
+	private float grade;
+
+	public Task() {
+		super();
 	}
-	
+
 	public int getId() {
 		return id;
 	}
@@ -33,20 +29,20 @@ public class Task {
 		this.name = name;
 	}
 
+	public float getGrade() {
+		return grade;
+	}
+
+	public void setGrade(float grade) {
+		this.grade = grade;
+	}
+
 	public String getDueDate() {
 		return dueDate;
 	}
 
 	public void setDueDate(String dueDate) {
 		this.dueDate = dueDate;
-	}
-
-	public String getType() {
-		return type;
-	}
-
-	public void setType(String type) {
-		this.type = type;
 	}
 
 	public String getForWhatCourse() {
@@ -64,5 +60,5 @@ public class Task {
 	public void setWeight(float weight) {
 		this.weight = weight;
 	}
-	
+
 }

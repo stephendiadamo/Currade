@@ -26,18 +26,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
         android:layout_below="@+id/CourseNameLabel"
-        android:inputType="textCapWords"
-        android:ems="10" />
+        android:ems="10"
+        android:inputType="textCapWords" />
 
     <EditText
         android:id="@+id/courseCodeInputText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
         android:layout_below="@+id/courseCodeLabel"
-        android:inputType="textCapCharacters"
-        android:ems="10" />
+        android:ems="10"
+        android:inputType="textCapCharacters" />
 
     <TextView
         android:id="@+id/CourseNameLabel"

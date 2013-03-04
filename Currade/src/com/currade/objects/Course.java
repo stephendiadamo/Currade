@@ -3,18 +3,18 @@ package com.currade.objects;
 import java.util.ArrayList;
 
 public class Course {
-	
+
 	private String courseName;
 	private String courseCode;
 	private ArrayList<Task> tasks;
 	private float currentMark;
 	private int id;
-	
-	public Course(){
+
+	public Course() {
 		super();
 	}
 
-	public Course(int id, String courseName, String courseCode, float mark){
+	public Course(int id, String courseName, String courseCode, float mark) {
 		this.id = id;
 		this.courseName = courseName;
 		this.courseCode = courseCode;
@@ -28,6 +28,7 @@ public class Course {
 	public void setCourseName(String courseName) {
 		this.courseName = courseName;
 	}
+
 	public String getCourseCode() {
 		return courseCode;
 	}
@@ -51,8 +52,8 @@ public class Course {
 	public void setId(int id) {
 		this.id = id;
 	}
-	
-	public void addTask(Task task){
+
+	public void addTask(Task task) {
 		tasks.add(task);
 	}
 
@@ -63,5 +64,5 @@ public class Course {
 	public void setTasks(ArrayList<Task> tasks) {
 		this.tasks = tasks;
 	}
-		
+
 }
