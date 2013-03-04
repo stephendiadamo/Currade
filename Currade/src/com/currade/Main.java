@@ -8,6 +8,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.FragmentTransaction;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -18,6 +19,7 @@ import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.Button;
 import android.widget.EditText;
@@ -40,15 +42,18 @@ public class Main extends FragmentActivity implements ActionBar.TabListener {
 	protected void onCreate(Bundle savedInstanceState) {
 		
 		super.onCreate(savedInstanceState);
+		
+		final ActionBar actionBar = getActionBar();
+		actionBar.setDisplayShowTitleEnabled(false);
+		actionBar.setDisplayShowHomeEnabled(false);
+		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+
 		setContentView(R.layout.activity_main);
 
-		final ActionBar actionBar = getActionBar();
-		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 		mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
 		mViewPager = (ViewPager) findViewById(R.id.pager);
 		mViewPager.setAdapter(mSectionsPagerAdapter);
-
 		mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
 			@Override
 			public void onPageSelected(int position) {
@@ -65,6 +70,7 @@ public class Main extends FragmentActivity implements ActionBar.TabListener {
 		dbh = new DBHandler(this);
 		allCourses = dbh.getAllCourses();
 		SetAdapterFillCourses();
+		setAdapterListeners();
 		
 		ActionBar.Tab coursesTab = actionBar.newTab().setText("Courses");
 		ActionBar.Tab tasksTab = actionBar.newTab().setText("Tasks");
@@ -74,7 +80,6 @@ public class Main extends FragmentActivity implements ActionBar.TabListener {
 		
 		actionBar.addTab(coursesTab);
 		actionBar.addTab(tasksTab);
-
 	}
 
 	@Override
@@ -149,10 +154,10 @@ public class Main extends FragmentActivity implements ActionBar.TabListener {
 		courseListView = (ListView)findViewById(R.id.courseListView);
 		adapter = new CourseListingAdapter(this, R.layout.course_row, allCourses);	
 		courseListView.setAdapter(adapter);
-		
-		courseListView.setOnItemLongClickListener(new OnItemLongClickListener() {
+	}
 
-						
+	private void setAdapterListeners() {
+		courseListView.setOnItemLongClickListener(new OnItemLongClickListener() {
 			@Override
 			public boolean onItemLongClick(AdapterView<?> av, View view, final int pos, long id) {
 				
@@ -177,8 +182,24 @@ public class Main extends FragmentActivity implements ActionBar.TabListener {
 				builder.show();
 				return true;
 			}
-		
 		});
+		
+		courseListView.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> av, View view, int pos, long id) {
+				
+				Intent intent = new Intent(view.getContext(), CourseDetailsActivity.class);
+				Course c = getCourseFromPos(pos);
+				intent.putExtra("COURSE_ID", c.getId());
+				intent.putExtra("COURSE_CODE", c.getCourseCode());
+				intent.putExtra("COURSE_NAME", c.getCourseName());
+				startActivity(intent);
+			}
+			
+		});
+		
+		
 	}
 	
 	private Course getCourseFromPos(int pos){
@@ -229,5 +250,4 @@ public class Main extends FragmentActivity implements ActionBar.TabListener {
 			dialog.show();
 		}
 	}
-	
 }

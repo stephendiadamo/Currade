@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <TextView
+        android:id="@+id/addCourseTaskTaskNameLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:text="@string/taskName"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <EditText
+        android:id="@+id/addCourseTaskDueDateTextBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/addCourseTaskDueDateLabel"
+        android:ems="10"
+        android:inputType="date" >
+
+        <requestFocus />
+    </EditText>
+
+    <EditText
+        android:id="@+id/addCourseTaskTaskNameTextBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/addCourseTaskTaskNameLabel"
+        android:inputType="text"
+        android:ems="10" />
+
+    <TextView
+        android:id="@+id/addCourseTaskDueDateLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/addCourseTaskTaskNameTextBox"
+        android:text="@string/dueDate"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/addCourseTaskWeightLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/addCourseTaskDueDateTextBox"
+        android:layout_toRightOf="@+id/addCourseTaskDueDateTextBox"
+        android:text="@string/weight"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <EditText
+        android:id="@+id/addCourseTaskWeightTextBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/addCourseTaskDueDateTextBox"
+        android:layout_alignBottom="@+id/addCourseTaskDueDateTextBox"
+        android:layout_toRightOf="@+id/addCourseTaskDueDateTextBox"
+        android:ems="10"
+        android:inputType="number" />
+
+    <Button
+        android:id="@+id/addCourseTaskAddButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/addCourseTaskDueDateLabel"
+        android:layout_below="@+id/addCourseTaskDueDateTextBox"
+        android:text="@string/add" />
+
+    <Button
+        android:id="@+id/addCourseTaskCancelButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/addCourseTaskAddButton"
+        android:layout_alignBottom="@+id/addCourseTaskAddButton"
+        android:layout_alignLeft="@+id/addCourseTaskWeightTextBox"
+        android:layout_marginLeft="14dp"
+        android:text="@string/cancel" />
+
+</RelativeLayout>

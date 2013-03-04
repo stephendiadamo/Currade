@@ -16,7 +16,7 @@ public class Task {
 		this.type = type;
 		this.forWhatCourse = forWhatCourse;
 	}
-
+	
 	public int getId() {
 		return id;
 	}

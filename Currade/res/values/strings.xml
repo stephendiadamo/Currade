@@ -11,10 +11,19 @@
     <string name="title_activity_tasks_page">TasksPage</string>
     <string name="courses">Courses</string>
     <string name="tasks">Tasks</string>
+    <string name="taskName">Task Name</string>
     <string name="addCourse">Add Course</string>
     <string name="courseCode">Course Code</string>
     <string name="courseName">Course Name</string>
     <string name="add">Add</string>
+    <string name="addTask">Add Task</string>
     <string name="cancel">Cancel</string>
+    <string name="curGrade">Current Grade:</string>    
+    <string name="maxPossibleGrade">Max Possible Grade:</string>
+    <string name="minPossibleGrade">Min Possible Grade:</string>
+    <string name="dueDate">Due Date</string>
+    <string name="weight">Weight</string>
+    
+    
 
 </resources>

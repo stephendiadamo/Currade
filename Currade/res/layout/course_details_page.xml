@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/courseDetailsCourseCode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:text="Course Code"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/courseDetailsCurrentGradeValueLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/courseDetailsCurrentGradeLabel"
+        android:layout_alignBottom="@+id/courseDetailsCurrentGradeLabel"
+        android:layout_alignParentRight="true"
+        android:text="0%"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/courseDetailsMinGradeLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/courseDetailsMaxGradeLabel"
+        android:layout_marginTop="15dp"
+        android:text="@string/minPossibleGrade"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/courseDetailsMinGradeValueLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/courseDetailsMinGradeLabel"
+        android:layout_alignBottom="@+id/courseDetailsMinGradeLabel"
+        android:layout_alignRight="@+id/courseDetailsMaxGradeValueLabel"
+        android:text="0%"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/courseDetailsMaxGradeValueLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/courseDetailsMaxGradeLabel"
+        android:layout_alignBottom="@+id/courseDetailsMaxGradeLabel"
+        android:layout_alignParentRight="true"
+        android:text="0%"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <ListView
+        android:id="@+id/courseDetailsTaskListView"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/courseDetailsTaskLabel" >
+    </ListView>
+
+    <TextView
+        android:id="@+id/courseDetailsTaskLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/courseDetailsCourseName"
+        android:layout_marginTop="18dp"
+        android:text="@string/tasks"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/courseDetailsCurrentGradeLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/courseDetailsTaskListView"
+        android:layout_marginTop="15dp"
+        android:text="@string/curGrade"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/courseDetailsMaxGradeLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/courseDetailsCurrentGradeLabel"
+        android:layout_marginTop="20dp"
+        android:text="@string/maxPossibleGrade"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/courseDetailsCourseName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/courseDetailsCourseCode"
+        android:layout_centerHorizontal="true"
+        android:text="Course Name"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <Button
+        android:id="@+id/courseDetailsAddNewTaskButton"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/courseDetailsTaskLabel"
+        android:layout_alignBottom="@+id/courseDetailsTaskLabel"
+        android:layout_toRightOf="@+id/courseDetailsCourseName"
+        android:text="@string/addTask" />
+
+</RelativeLayout>

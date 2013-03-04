@@ -29,6 +29,12 @@
             android:name="com.currade.TasksPage"
             android:label="@string/title_activity_tasks_page">
         </activity>
+        <activity
+            android:name="com.currade.CourseDetailsActivity"
+            android:label="@string/courses" >
+        </activity>
+        
+        
     </application>
 
 </manifest>
