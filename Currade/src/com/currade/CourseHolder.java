@@ -17,4 +17,3 @@ public class CourseHolder {
 		this.courseMark = courseMark;
 	}
 }
-

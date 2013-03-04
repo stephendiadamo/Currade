@@ -4,8 +4,10 @@ import java.util.List;
 import java.util.Locale;
 
 import android.app.ActionBar;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.FragmentTransaction;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -15,6 +17,8 @@ import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -45,17 +49,19 @@ public class Main extends FragmentActivity implements ActionBar.TabListener {
 		mViewPager = (ViewPager) findViewById(R.id.pager);
 		mViewPager.setAdapter(mSectionsPagerAdapter);
 
-		// When swiping between different sections, select the corresponding
-		// tab. We can also use ActionBar.Tab#select() to do this if we have
-		// a reference to the Tab.
 		mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
 			@Override
 			public void onPageSelected(int position) {
-				actionBar.setSelectedNavigationItem(position);
+				if (position == 0){
+					setContentView(R.layout.courses_page);
+					SetAdapterFillCourses();
+				} else {
+					setContentView(R.layout.tasks_page);
+				}
 			}
-			
-			// TODO: Remove swiping
 		});
+		
+		// Do this on first load
 		dbh = new DBHandler(this);
 		allCourses = dbh.getAllCourses();
 		SetAdapterFillCourses();
@@ -144,6 +150,43 @@ public class Main extends FragmentActivity implements ActionBar.TabListener {
 		adapter = new CourseListingAdapter(this, R.layout.course_row, allCourses);	
 		courseListView.setAdapter(adapter);
 		
+		courseListView.setOnItemLongClickListener(new OnItemLongClickListener() {
+
+						
+			@Override
+			public boolean onItemLongClick(AdapterView<?> av, View view, final int pos, long id) {
+				
+				DialogInterface.OnClickListener diaClickListener = new DialogInterface.OnClickListener(){
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						switch(which){
+						case DialogInterface.BUTTON_POSITIVE:
+							dbh.deleteCourse(getCourseFromPos(pos));
+							removeFromCourses(pos);
+					        adapter.notifyDataSetChanged();
+							break;
+						default:
+							break;
+						}
+					}
+				};
+				AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+				builder.setMessage("Delete " + getCourseFromPos(pos).getCourseCode() + "?");
+				builder.setPositiveButton("Yes", diaClickListener);
+				builder.setNegativeButton("No", diaClickListener);
+				builder.show();
+				return true;
+			}
+		
+		});
+	}
+	
+	private Course getCourseFromPos(int pos){
+		return allCourses.get(pos);
+	}
+	
+	private void removeFromCourses(int pos){
+		allCourses.remove(pos);
 	}
 	
 	// Course fragment actions
