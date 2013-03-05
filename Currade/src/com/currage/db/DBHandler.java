@@ -65,7 +65,6 @@ public class DBHandler extends SQLiteOpenHelper {
 		values.put(COURSE_CODE, course.getCourseCode());
 		values.put(COURSE_NAME, course.getCourseName());
 		values.put(COURSE_MARK, course.getCurrentMark());
-
 		db.insert(TABLE_COURSES, null, values);
 		db.close();
 	}
@@ -74,12 +73,13 @@ public class DBHandler extends SQLiteOpenHelper {
 		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor cursor = db.query(TABLE_COURSES, new String[] { KEY_COURSE_ID, COURSE_NAME, COURSE_CODE, COURSE_MARK },
 				KEY_COURSE_ID + " = ?", new String[] { String.valueOf(id) }, null, null, null, null);
-		if (cursor != null) {
-			cursor.moveToFirst();
+		Course course = null;
+		if (cursor.moveToFirst()) {
+			course = new Course(Integer.parseInt(cursor.getString(0)), cursor.getString(1), cursor.getString(2),
+					Float.parseFloat(cursor.getString(3)));
+			cursor.close();
 		}
-
-		Course course = new Course(Integer.parseInt(cursor.getString(0)), cursor.getString(1), cursor.getString(2),
-				Float.parseFloat(cursor.getString(3)));
+		db.close();
 		return course;
 	}
 
@@ -99,6 +99,8 @@ public class DBHandler extends SQLiteOpenHelper {
 				courseList.add(course);
 			} while (cursor.moveToNext());
 		}
+		cursor.close();
+		db.close();
 		return courseList;
 	}
 
@@ -107,6 +109,7 @@ public class DBHandler extends SQLiteOpenHelper {
 		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor cursor = db.rawQuery(countQuery, null);
 		cursor.close();
+		db.close();
 		return cursor.getCount();
 	}
 
@@ -118,8 +121,10 @@ public class DBHandler extends SQLiteOpenHelper {
 		values.put(COURSE_NAME, course.getCourseName());
 		values.put(COURSE_MARK, course.getCurrentMark());
 
-		return db
-				.update(TABLE_COURSES, values, KEY_COURSE_ID + " = ?", new String[] { String.valueOf(course.getId()) });
+		int retVal = db.update(TABLE_COURSES, values, KEY_COURSE_ID + " = ?",
+				new String[] { String.valueOf(course.getId()) });
+		db.close();
+		return retVal;
 
 	}
 
@@ -156,6 +161,8 @@ public class DBHandler extends SQLiteOpenHelper {
 		task.setForWhatCourse(cursor.getString(2));
 		task.setWeight(cursor.getFloat(3));
 		task.setGrade(cursor.getFloat(4));
+		cursor.close();
+		db.close();
 		return task;
 	}
 
@@ -176,6 +183,8 @@ public class DBHandler extends SQLiteOpenHelper {
 				taskList.add(task);
 			} while (cursor.moveToNext());
 		}
+		cursor.close();
+		db.close();
 		return taskList;
 	}
 
@@ -184,6 +193,7 @@ public class DBHandler extends SQLiteOpenHelper {
 		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor cursor = db.rawQuery(countQuery, null);
 		cursor.close();
+		db.close();
 		return cursor.getCount();
 	}
 
@@ -195,7 +205,10 @@ public class DBHandler extends SQLiteOpenHelper {
 		values.put(TASK_FOR_WHAT_COURSE, task.getForWhatCourse());
 		values.put(TASK_WEIGHT, task.getWeight());
 		values.put(TASK_GRADE, task.getGrade());
-		return db.update(TABLE_TASKS, values, KEY_TASK_ID + " = ?", new String[] { String.valueOf(task.getId()) });
+		int retVal = db
+				.update(TABLE_TASKS, values, KEY_TASK_ID + " = ?", new String[] { String.valueOf(task.getId()) });
+		db.close();
+		return retVal;
 
 	}
 
@@ -204,10 +217,11 @@ public class DBHandler extends SQLiteOpenHelper {
 		db.delete(TABLE_TASKS, KEY_TASK_ID + " = ?", new String[] { String.valueOf(task.getId()) });
 		db.close();
 	}
-	
-	public List<Task> getTasksFromCourse(Course course){
+
+	public List<Task> getTasksFromCourse(Course course) {
 		List<Task> taskList = new ArrayList<Task>();
-		String selectQuery = "SELECT * FROM " + TABLE_TASKS +" WHERE " + TASK_FOR_WHAT_COURSE + " = " + course.getCourseCode();
+		String selectQuery = "SELECT * FROM " + TABLE_TASKS + " WHERE " + TASK_FOR_WHAT_COURSE + " = "
+				+ course.getCourseCode();
 		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor cursor = db.rawQuery(selectQuery, null);
 		if (cursor.moveToFirst()) {
@@ -221,6 +235,8 @@ public class DBHandler extends SQLiteOpenHelper {
 				taskList.add(task);
 			} while (cursor.moveToNext());
 		}
+		cursor.close();
+		db.close();
 		return taskList;
 	}
 

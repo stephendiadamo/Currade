@@ -58,8 +58,8 @@ public class Main extends FragmentActivity implements ActionBar.TabListener {
 			@Override
 			public void onPageSelected(int position) {
 				if (position == 0) {
-					//setContentView(R.layout.courses_page);
 					SetAdapterFillCourses();
+					adapter.notifyDataSetChanged();
 				} else {
 					setContentView(R.layout.tasks_page);
 				}
@@ -68,9 +68,7 @@ public class Main extends FragmentActivity implements ActionBar.TabListener {
 
 		// Do this on first load
 		dbh = new DBHandler(this);
-		allCourses = dbh.getAllCourses();
 		SetAdapterFillCourses();
-		setAdapterListeners();
 
 		ActionBar.Tab coursesTab = actionBar.newTab().setText("Courses");
 		ActionBar.Tab tasksTab = actionBar.newTab().setText("Tasks");
@@ -151,9 +149,11 @@ public class Main extends FragmentActivity implements ActionBar.TabListener {
 
 	private void SetAdapterFillCourses() {
 		setContentView(R.layout.courses_page);
+		allCourses = dbh.getAllCourses();
 		courseListView = (ListView) findViewById(R.id.courseListView);
 		adapter = new CourseListingAdapter(this, R.layout.course_row, allCourses);
 		courseListView.setAdapter(adapter);
+		setAdapterListeners();
 	}
 
 	private void setAdapterListeners() {
@@ -238,8 +238,8 @@ public class Main extends FragmentActivity implements ActionBar.TabListener {
 						course.setCourseName(courseName.getText().toString());
 						course.setCurrentMark(0);
 						dbh.addCourse(course);
-						allCourses.add(course);
 						adapter.notifyDataSetChanged();
+						SetAdapterFillCourses();
 						dialog.dismiss();
 					} else {
 						Toast.makeText(v.getContext(), "Please add a course code.", Toast.LENGTH_LONG).show();
