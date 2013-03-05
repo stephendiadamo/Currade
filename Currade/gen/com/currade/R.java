@@ -25,7 +25,7 @@ public final class R {
     }
     public static final class id {
         public static final int CourseNameLabel=0x7f080006;
-        public static final int action_settings=0x7f080022;
+        public static final int action_settings=0x7f080025;
         public static final int addCourseButton=0x7f080004;
         public static final int addCourseTaskAddButton=0x7f08000e;
         public static final int addCourseTaskCancelButton=0x7f08000f;
@@ -35,7 +35,7 @@ public final class R {
         public static final int addCourseTaskTaskNameTextBox=0x7f08000b;
         public static final int addCourseTaskWeightLabel=0x7f08000c;
         public static final int addCourseTaskWeightTextBox=0x7f08000d;
-        public static final int addNewCourse=0x7f080020;
+        public static final int addNewCourse=0x7f080023;
         public static final int cancelAddCourseButton=0x7f080003;
         public static final int courseCodeInputText=0x7f080007;
         public static final int courseCodeLabel=0x7f080002;
@@ -50,7 +50,7 @@ public final class R {
         public static final int courseDetailsMinGradeValueLabel=0x7f080015;
         public static final int courseDetailsTaskLabel=0x7f080018;
         public static final int courseDetailsTaskListView=0x7f080017;
-        public static final int courseListView=0x7f08001f;
+        public static final int courseListView=0x7f080022;
         public static final int courseNameInputText=0x7f080005;
         public static final int courseRowCourseCode=0x7f08001c;
         public static final int courseRowCourseMark=0x7f08001e;
@@ -58,7 +58,10 @@ public final class R {
         public static final int fragment_container=0x7f080001;
         public static final int fullCourseRow=0x7f08001b;
         public static final int pager=0x7f080000;
-        public static final int section_label=0x7f080021;
+        public static final int section_label=0x7f080024;
+        public static final int taskRowTaskMark=0x7f080020;
+        public static final int taskRowTaskName=0x7f08001f;
+        public static final int taskRowTaskWeight=0x7f080021;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
@@ -66,9 +69,10 @@ public final class R {
         public static final int add_task_from_course=0x7f030002;
         public static final int course_details_page=0x7f030003;
         public static final int course_row=0x7f030004;
-        public static final int courses_page=0x7f030005;
-        public static final int fragment_main_dummy=0x7f030006;
-        public static final int tasks_page=0x7f030007;
+        public static final int course_task_row=0x7f030005;
+        public static final int courses_page=0x7f030006;
+        public static final int fragment_main_dummy=0x7f030007;
+        public static final int tasks_page=0x7f030008;
     }
     public static final class menu {
         public static final int courses_page=0x7f070000;

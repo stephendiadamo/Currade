@@ -156,11 +156,12 @@ public class DBHandler extends SQLiteOpenHelper {
 		}
 
 		Task task = new Task();
-		task.setName(cursor.getString(0));
-		task.setDueDate(cursor.getString(1));
-		task.setForWhatCourse(cursor.getString(2));
-		task.setWeight(cursor.getFloat(3));
-		task.setGrade(cursor.getFloat(4));
+		task.setId(cursor.getInt(0));
+		task.setName(cursor.getString(1));
+		task.setDueDate(cursor.getString(2));
+		task.setForWhatCourse(cursor.getString(3));
+		task.setWeight(cursor.getFloat(4));
+		task.setGrade(cursor.getFloat(5));
 		cursor.close();
 		db.close();
 		return task;
@@ -175,11 +176,12 @@ public class DBHandler extends SQLiteOpenHelper {
 		if (cursor.moveToFirst()) {
 			do {
 				Task task = new Task();
-				task.setName(cursor.getString(0));
-				task.setDueDate(cursor.getString(1));
-				task.setForWhatCourse(cursor.getString(2));
-				task.setWeight(cursor.getFloat(3));
-				task.setGrade(cursor.getFloat(4));
+				task.setId(cursor.getInt(0));
+				task.setName(cursor.getString(1));
+				task.setDueDate(cursor.getString(2));
+				task.setForWhatCourse(cursor.getString(3));
+				task.setWeight(cursor.getFloat(4));
+				task.setGrade(cursor.getFloat(5));
 				taskList.add(task);
 			} while (cursor.moveToNext());
 		}
@@ -220,18 +222,19 @@ public class DBHandler extends SQLiteOpenHelper {
 
 	public List<Task> getTasksFromCourse(Course course) {
 		List<Task> taskList = new ArrayList<Task>();
-		String selectQuery = "SELECT * FROM " + TABLE_TASKS + " WHERE " + TASK_FOR_WHAT_COURSE + " = "
-				+ course.getCourseCode();
+		String selectQuery = "SELECT * FROM " + TABLE_TASKS + " WHERE " + TASK_FOR_WHAT_COURSE + " = '"
+				+ course.getCourseCode() + "'";
 		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor cursor = db.rawQuery(selectQuery, null);
 		if (cursor.moveToFirst()) {
 			do {
 				Task task = new Task();
-				task.setName(cursor.getString(0));
-				task.setDueDate(cursor.getString(1));
-				task.setForWhatCourse(cursor.getString(2));
-				task.setWeight(cursor.getFloat(3));
-				task.setGrade(cursor.getFloat(4));
+				task.setId(cursor.getInt(0));
+				task.setName(cursor.getString(1));
+				task.setDueDate(cursor.getString(2));
+				task.setForWhatCourse(cursor.getString(3));
+				task.setWeight(cursor.getFloat(4));
+				task.setGrade(cursor.getFloat(5));
 				taskList.add(task);
 			} while (cursor.moveToNext());
 		}
