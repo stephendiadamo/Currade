@@ -23,6 +23,14 @@
     <string name="minPossibleGrade">Min Possible Grade:</string>
     <string name="dueDate">Due Date</string>
     <string name="weight">Weight</string>
+    <string name="remove_task">Remove Task</string>
+    <string name="edit_task">Edit Task</string>
+    <string name="add_grade">Add Grade</string>
+    <string name="grade">Grade:</string>
+    <string name="finalString">Final</string>
+    <string name="prediction">Prediction</string>
+    <string name="clear">Clear</string>
+    <string name="done">Done</string>
     
     
 

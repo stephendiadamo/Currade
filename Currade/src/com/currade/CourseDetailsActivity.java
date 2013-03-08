@@ -7,9 +7,14 @@ import android.app.Dialog;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,6 +36,7 @@ public class CourseDetailsActivity extends Activity {
 		dbh = new DBHandler(this);
 		setAllValues();
 		setAdapterFillTasks();
+		setAdapterListeners();
 
 		Button addTask = (Button) findViewById(R.id.courseDetailsAddNewTaskButton);
 		addTask.setOnClickListener(new OnClickListener() {
@@ -71,7 +77,6 @@ public class CourseDetailsActivity extends Activity {
 							dbh.addTask(task);
 							adapter.notifyDataSetChanged();
 							setAdapterFillTasks();
-//							Toast.makeText(v.getContext(), "Added a task...", Toast.LENGTH_LONG).show();
 							dialog.dismiss();
 						} else {
 							Toast.makeText(v.getContext(), "Please fill in all the fields.", Toast.LENGTH_LONG).show();
@@ -84,10 +89,132 @@ public class CourseDetailsActivity extends Activity {
 
 	}
 
+	private void setAdapterListeners() {
+		taskListView.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> av, View view, final int pos, long id) {
+
+				final Dialog dialog = new Dialog(view.getContext());
+				dialog.setContentView(R.layout.course_task_options);
+				dialog.setTitle("Options");
+				TableRow removeTask = (TableRow) dialog.findViewById(R.id.courseRemoveTask);
+				TableRow editTask = (TableRow) dialog.findViewById(R.id.courseEditTask);
+				TableRow addGrade = (TableRow) dialog.findViewById(R.id.courseAddGrade);
+				TableRow cancel = (TableRow) dialog.findViewById(R.id.courseCancel);
+
+				removeTask.setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						Toast.makeText(v.getContext(), "Remove", Toast.LENGTH_LONG).show();
+						dialog.dismiss();
+					}
+				});
+
+				editTask.setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						Toast.makeText(v.getContext(), "Edit", Toast.LENGTH_LONG).show();
+						dialog.dismiss();
+					}
+				});
+
+				addGrade.setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+
+						final Dialog addGradeDialog = new Dialog(v.getContext());
+						addGradeDialog.setContentView(R.layout.add_grade);
+						addGradeDialog.setTitle("Add Grade");
+
+						Button addGradeDone = (Button) addGradeDialog.findViewById(R.id.addGradeDone);
+						Button addGradeCancel = (Button) addGradeDialog.findViewById(R.id.addGradeCancel);
+						final EditText gradeBox = (EditText) addGradeDialog.findViewById(R.id.addGradeGradeBox);
+						final RadioGroup whatToDo = (RadioGroup) addGradeDialog.findViewById(R.id.addGradeRadioGroup);
+						whatToDo.check(R.id.addGradeFinalRadio);
+						gradeBox.setText(String.valueOf(course.getCurrentMark()));
+						addGradeDone.setOnClickListener(new OnClickListener() {
+
+							@Override
+							public void onClick(View v) {
+								int selected = whatToDo.getCheckedRadioButtonId();
+								RadioButton selectedRadioButton = (RadioButton) addGradeDialog.findViewById(selected);
+
+								if (!gradeBox.getText().toString().isEmpty()
+										&& (selectedRadioButton.getText().equals("Final") || selectedRadioButton
+												.getText().equals("Predict"))) {
+									try {
+
+										float grade = Float.parseFloat(gradeBox.getText().toString());
+										if (selectedRadioButton.getText().equals("Final")) {
+											courseTasks.get(pos).setGrade(grade);
+											dbh.updateTask(courseTasks.get(pos));
+											adapter.notifyDataSetChanged();
+											setAdapterFillTasks();
+										} else {
+											// TODO: Implement grade prediction
+										}
+										addGradeDialog.dismiss();
+										dialog.dismiss();
+										calculateGrades();
+										setAllValues();
+									} catch (NumberFormatException e) {
+										Toast.makeText(v.getContext(), "Please use a number value for your grade",
+												Toast.LENGTH_LONG).show();
+									}
+
+								} else if (selectedRadioButton.getText().equals("Clear")) {
+									// TODO: Use a better value than 0 for
+									// default
+									courseTasks.get(pos).setGrade(0);
+									dbh.updateTask(courseTasks.get(pos));
+									adapter.notifyDataSetChanged();
+									setAdapterFillTasks();
+									addGradeDialog.dismiss();
+									dialog.dismiss();
+									calculateGrades();
+									setAllValues();
+								}
+							}
+						});
+
+						addGradeCancel.setOnClickListener(new OnClickListener() {
+							@Override
+							public void onClick(View v) {
+								addGradeDialog.dismiss();
+							}
+						});
+						addGradeDialog.show();
+					}
+				});
+
+				cancel.setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						dialog.dismiss();
+					}
+				});
+				dialog.show();
+			}
+		});
+	}
+
+	private void calculateGrades() {
+		float grade = 0;
+		float totalPercentage = 0;
+		for (Task t : courseTasks) {
+			grade += t.getGrade() * t.getWeight();
+			totalPercentage += t.getWeight();
+		}
+		grade = grade / totalPercentage;
+		course.setCurrentMark(grade);
+		dbh.updateCourse(course);
+		return;
+	}
+
 	private void setAdapterFillTasks() {
 		courseTasks = dbh.getTasksFromCourse(course);
 		taskListView = (ListView) findViewById(R.id.courseDetailsTaskListView);
-		adapter = new CourseTaskListAdapter(this , R.layout.course_task_row, courseTasks);
+		adapter = new CourseTaskListAdapter(this, R.layout.course_task_row, courseTasks);
 		taskListView.setAdapter(adapter);
 	}
 
