@@ -8,17 +8,37 @@ public class Course {
 	private String courseCode;
 	private ArrayList<Task> tasks;
 	private float currentMark;
+	private float currentMaxMark;
+	private float currentMinMark;
 	private int id;
 
 	public Course() {
 		super();
 	}
 
-	public Course(int id, String courseName, String courseCode, float mark) {
+	public Course(int id, String courseName, String courseCode, float mark, float maxMark, float minMark) {
 		this.id = id;
 		this.courseName = courseName;
 		this.courseCode = courseCode;
 		this.currentMark = mark;
+		this.currentMaxMark = maxMark;
+		this.currentMinMark = minMark;
+	}
+
+	public float getCurrentMaxMark() {
+		return currentMaxMark;
+	}
+
+	public void setCurrentMaxMark(float currentMaxMark) {
+		this.currentMaxMark = currentMaxMark;
+	}
+
+	public float getCurrentMinMark() {
+		return currentMinMark;
+	}
+
+	public void setCurrentMinMark(float currentMinMark) {
+		this.currentMinMark = currentMinMark;
 	}
 
 	public String getCourseName() {

@@ -236,7 +236,9 @@ public class Main extends FragmentActivity implements ActionBar.TabListener {
 						Course course = new Course();
 						course.setCourseCode(courseCode.getText().toString());
 						course.setCourseName(courseName.getText().toString());
-						course.setCurrentMark(0);
+						course.setCurrentMark(-1);
+						course.setCurrentMaxMark(-1);
+						course.setCurrentMinMark(-1);
 						dbh.addCourse(course);
 						adapter.notifyDataSetChanged();
 						setAdapterFillCourses();

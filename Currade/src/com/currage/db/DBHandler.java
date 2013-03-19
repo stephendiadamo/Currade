@@ -14,7 +14,7 @@ import com.currade.objects.Task;
 
 public class DBHandler extends SQLiteOpenHelper {
 
-	private static final int DATABASE_VERSION = 2;
+	private static final int DATABASE_VERSION = 3;
 	private static final String DATABASE_NAME = "coursesManager";
 
 	// Tables
@@ -26,6 +26,8 @@ public class DBHandler extends SQLiteOpenHelper {
 	private static final String COURSE_CODE = "course_code";
 	private static final String COURSE_NAME = "course_name";
 	private static final String COURSE_MARK = "mark";
+	private static final String COURSE_MAX_MARK = "max_mark";
+	private static final String COURSE_MIN_MARK = "min_mark";
 
 	// Columns for tasks
 	private static final String KEY_TASK_ID = "id";
@@ -34,6 +36,7 @@ public class DBHandler extends SQLiteOpenHelper {
 	private static final String TASK_FOR_WHAT_COURSE = "course";
 	private static final String TASK_WEIGHT = "weight";
 	private static final String TASK_GRADE = "grade";
+	private static final String TASK_APROX_GRADE = "aprox_grade";
 
 	public DBHandler(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -42,11 +45,12 @@ public class DBHandler extends SQLiteOpenHelper {
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 		String CREATE_COURSE_TABLE = "CREATE TABLE " + TABLE_COURSES + "(" + KEY_COURSE_ID + " INTEGER PRIMARY KEY,"
-				+ COURSE_CODE + " TEXT," + COURSE_NAME + " TEXT," + COURSE_MARK + " REAL" + ")";
+				+ COURSE_CODE + " TEXT," + COURSE_NAME + " TEXT," + COURSE_MARK + " REAL," + COURSE_MAX_MARK + " REAL,"
+				+ COURSE_MIN_MARK + " REAL" + ")";
 
 		String CREATE_TASK_TABLE = "CREATE TABLE " + TABLE_TASKS + "(" + KEY_TASK_ID + " INTEGER PRIMARY KEY,"
 				+ TASK_NAME + " TEXT," + TASK_DUE_DATE + " TEXT," + TASK_FOR_WHAT_COURSE + " TEXT," + TASK_WEIGHT
-				+ " REAL," + TASK_GRADE + " REAL" + ")";
+				+ " REAL," + TASK_GRADE + " REAL," + TASK_APROX_GRADE + " REAL" + ")";
 
 		db.execSQL(CREATE_COURSE_TABLE);
 		db.execSQL(CREATE_TASK_TABLE);
@@ -65,18 +69,22 @@ public class DBHandler extends SQLiteOpenHelper {
 		values.put(COURSE_CODE, course.getCourseCode());
 		values.put(COURSE_NAME, course.getCourseName());
 		values.put(COURSE_MARK, course.getCurrentMark());
+		values.put(COURSE_MAX_MARK, course.getCurrentMaxMark());
+		values.put(COURSE_MIN_MARK, course.getCurrentMinMark());
 		db.insert(TABLE_COURSES, null, values);
 		db.close();
 	}
 
 	public Course getCourse(int id) {
 		SQLiteDatabase db = this.getReadableDatabase();
-		Cursor cursor = db.query(TABLE_COURSES, new String[] { KEY_COURSE_ID, COURSE_NAME, COURSE_CODE, COURSE_MARK },
-				KEY_COURSE_ID + " = ?", new String[] { String.valueOf(id) }, null, null, null, null);
+		Cursor cursor = db.query(TABLE_COURSES, new String[] { KEY_COURSE_ID, COURSE_NAME, COURSE_CODE, COURSE_MARK,
+				COURSE_MAX_MARK, COURSE_MIN_MARK }, KEY_COURSE_ID + " = ?", new String[] { String.valueOf(id) }, null,
+				null, null, null);
 		Course course = null;
 		if (cursor.moveToFirst()) {
 			course = new Course(Integer.parseInt(cursor.getString(0)), cursor.getString(1), cursor.getString(2),
-					Float.parseFloat(cursor.getString(3)));
+					Float.parseFloat(cursor.getString(3)), Float.parseFloat(cursor.getString(4)),
+					Float.parseFloat(cursor.getString(5)));
 			cursor.close();
 		}
 		db.close();
@@ -92,10 +100,12 @@ public class DBHandler extends SQLiteOpenHelper {
 		if (cursor.moveToFirst()) {
 			do {
 				Course course = new Course();
-				course.setId(Integer.parseInt(cursor.getString(0)));
+				course.setId(cursor.getInt(0));
 				course.setCourseCode(cursor.getString(1));
 				course.setCourseName(cursor.getString(2));
-				course.setCurrentMark(Float.parseFloat(cursor.getString(3)));
+				course.setCurrentMark(cursor.getFloat(3));
+				course.setCurrentMaxMark(cursor.getFloat(4));
+				course.setCurrentMinMark(cursor.getFloat(5));
 				courseList.add(course);
 			} while (cursor.moveToNext());
 		}
@@ -120,12 +130,13 @@ public class DBHandler extends SQLiteOpenHelper {
 		values.put(COURSE_CODE, course.getCourseCode());
 		values.put(COURSE_NAME, course.getCourseName());
 		values.put(COURSE_MARK, course.getCurrentMark());
+		values.put(COURSE_MAX_MARK, course.getCurrentMaxMark());
+		values.put(COURSE_MIN_MARK, course.getCurrentMinMark());
 
 		int retVal = db.update(TABLE_COURSES, values, KEY_COURSE_ID + " = ?",
 				new String[] { String.valueOf(course.getId()) });
 		db.close();
 		return retVal;
-
 	}
 
 	public void deleteCourse(Course course) {
@@ -142,6 +153,7 @@ public class DBHandler extends SQLiteOpenHelper {
 		values.put(TASK_FOR_WHAT_COURSE, task.getForWhatCourse());
 		values.put(TASK_WEIGHT, task.getWeight());
 		values.put(TASK_GRADE, task.getGrade());
+		values.put(TASK_APROX_GRADE, task.getApproximatedGrade());
 		db.insert(TABLE_TASKS, null, values);
 		db.close();
 	}
@@ -149,7 +161,7 @@ public class DBHandler extends SQLiteOpenHelper {
 	public Task getTask(int id) {
 		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor cursor = db.query(TABLE_TASKS, new String[] { KEY_TASK_ID, TASK_NAME, TASK_DUE_DATE,
-				TASK_FOR_WHAT_COURSE, TASK_WEIGHT, TASK_GRADE }, KEY_TASK_ID + " = ?",
+				TASK_FOR_WHAT_COURSE, TASK_WEIGHT, TASK_GRADE, TASK_APROX_GRADE }, KEY_TASK_ID + " = ?",
 				new String[] { String.valueOf(id) }, null, null, null, null);
 		if (cursor != null) {
 			cursor.moveToFirst();
@@ -162,6 +174,7 @@ public class DBHandler extends SQLiteOpenHelper {
 		task.setForWhatCourse(cursor.getString(3));
 		task.setWeight(cursor.getFloat(4));
 		task.setGrade(cursor.getFloat(5));
+		task.setApproximatedGrade(cursor.getFloat(6));
 		cursor.close();
 		db.close();
 		return task;
@@ -182,6 +195,7 @@ public class DBHandler extends SQLiteOpenHelper {
 				task.setForWhatCourse(cursor.getString(3));
 				task.setWeight(cursor.getFloat(4));
 				task.setGrade(cursor.getFloat(5));
+				task.setApproximatedGrade(cursor.getFloat(6));
 				taskList.add(task);
 			} while (cursor.moveToNext());
 		}
@@ -207,6 +221,7 @@ public class DBHandler extends SQLiteOpenHelper {
 		values.put(TASK_FOR_WHAT_COURSE, task.getForWhatCourse());
 		values.put(TASK_WEIGHT, task.getWeight());
 		values.put(TASK_GRADE, task.getGrade());
+		values.put(TASK_APROX_GRADE, task.getApproximatedGrade());
 		int retVal = db
 				.update(TABLE_TASKS, values, KEY_TASK_ID + " = ?", new String[] { String.valueOf(task.getId()) });
 		db.close();
@@ -235,6 +250,7 @@ public class DBHandler extends SQLiteOpenHelper {
 				task.setForWhatCourse(cursor.getString(3));
 				task.setWeight(cursor.getFloat(4));
 				task.setGrade(cursor.getFloat(5));
+				task.setApproximatedGrade(cursor.getFloat(6));
 				taskList.add(task);
 			} while (cursor.moveToNext());
 		}

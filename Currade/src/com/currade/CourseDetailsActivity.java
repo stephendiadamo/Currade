@@ -73,7 +73,8 @@ public class CourseDetailsActivity extends Activity {
 							task.setDueDate(dueDate.getText().toString());
 							task.setWeight(Float.parseFloat(weight.getText().toString()));
 							task.setForWhatCourse(course.getCourseCode());
-							task.setGrade(0);
+							task.setGrade(-1);
+							task.setApproximatedGrade(-1);
 							dbh.addTask(task);
 							adapter.notifyDataSetChanged();
 							setAdapterFillTasks();
@@ -131,7 +132,7 @@ public class CourseDetailsActivity extends Activity {
 						final EditText gradeBox = (EditText) addGradeDialog.findViewById(R.id.addGradeGradeBox);
 						final RadioGroup whatToDo = (RadioGroup) addGradeDialog.findViewById(R.id.addGradeRadioGroup);
 						whatToDo.check(R.id.addGradeFinalRadio);
-						gradeBox.setText(String.valueOf(course.getCurrentMark()));
+						gradeBox.setText("0%");
 						addGradeDone.setOnClickListener(new OnClickListener() {
 
 							@Override
@@ -205,8 +206,11 @@ public class CourseDetailsActivity extends Activity {
 			grade += t.getGrade() * t.getWeight();
 			totalPercentage += t.getWeight();
 		}
-		grade = grade / totalPercentage;
-		course.setCurrentMark(grade);
+		float maxMark = (100 - totalPercentage) + (grade / totalPercentage) * (totalPercentage / 100);
+		float minMark = (grade / 100);
+		course.setCurrentMark(grade / totalPercentage);
+		course.setCurrentMaxMark(maxMark);
+		course.setCurrentMinMark(minMark);
 		dbh.updateCourse(course);
 		return;
 	}
@@ -224,10 +228,15 @@ public class CourseDetailsActivity extends Activity {
 			TextView courseCodeLabel = (TextView) findViewById(R.id.courseDetailsCourseCode);
 			TextView courseNameLabel = (TextView) findViewById(R.id.courseDetailsCourseName);
 			TextView courseGradeLabel = (TextView) findViewById(R.id.courseDetailsCurrentGradeValueLabel);
+			TextView courseMaxGradeLabel = (TextView) findViewById(R.id.courseDetailsMaxGradeValueLabel);
+			TextView courseMinGradeLabel = (TextView) findViewById(R.id.courseDetailsMinGradeValueLabel);
+
 			course = dbh.getCourse(extras.getInt("COURSE_ID"));
 			courseCodeLabel.setText(course.getCourseCode());
 			courseNameLabel.setText(course.getCourseName());
-			courseGradeLabel.setText(Integer.toString((int) course.getCurrentMark()) + "%");
+			courseGradeLabel.setText(String.valueOf(course.getCurrentMark()));
+			courseMaxGradeLabel.setText(String.valueOf(course.getCurrentMaxMark()));
+			courseMinGradeLabel.setText(String.valueOf(course.getCurrentMinMark()));
 		}
 	}
 }

@@ -8,6 +8,7 @@ public class Task {
 	private String forWhatCourse;
 	private float weight;
 	private float grade;
+	private float approximatedGrade;
 
 	public Task() {
 		super();
@@ -15,6 +16,14 @@ public class Task {
 
 	public int getId() {
 		return id;
+	}
+
+	public float getApproximatedGrade() {
+		return approximatedGrade;
+	}
+
+	public void setApproximatedGrade(float approximatedGrade) {
+		this.approximatedGrade = approximatedGrade;
 	}
 
 	public void setId(int id) {
