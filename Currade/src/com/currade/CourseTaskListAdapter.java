@@ -47,8 +47,12 @@ public class CourseTaskListAdapter extends ArrayAdapter<Task> {
 
 		Task task = tasks.get(pos);
 		holder.taskName.setText(task.getName());
-		holder.taskWeight.setText("(" + Integer.toString((int) task.getWeight()) + "%)");
-		holder.taskMark.setText(Integer.toString((int) task.getGrade()) + "%");
+		String weight = Float.toString(task.getWeight()).substring(0, 3) + "0%";
+		String grade = task.getGrade() == -1 ? task.getDueDate() : Float.toString(task.getGrade()).substring(0, 3)
+				+ "0%";
+
+		holder.taskWeight.setText("(" + weight + ")");
+		holder.taskMark.setText(grade);
 		return row;
 	}
 }

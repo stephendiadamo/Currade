@@ -201,6 +201,13 @@ public class Main extends FragmentActivity implements ActionBar.TabListener {
 
 	}
 
+	@Override
+	public void onResume() {
+		super.onResume();
+		adapter.notifyDataSetChanged();
+		setAdapterFillCourses();
+	}
+
 	private Course getCourseFromPos(int pos) {
 		return allCourses.get(pos);
 	}

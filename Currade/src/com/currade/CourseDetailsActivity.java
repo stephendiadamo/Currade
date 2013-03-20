@@ -274,9 +274,16 @@ public class CourseDetailsActivity extends Activity {
 
 		courseCodeLabel.setText(course.getCourseCode());
 		courseNameLabel.setText(course.getCourseName());
-		courseGradeLabel.setText(String.valueOf(course.getCurrentMark()));
-		courseMaxGradeLabel.setText(String.valueOf(course.getCurrentMaxMark()));
-		courseMinGradeLabel.setText(String.valueOf(course.getCurrentMinMark()));
+
+		String mark = course.getCurrentMark() == -1 ? "0" : String.valueOf(course.getCurrentMark()).substring(0, 3);
+		String maxMark = course.getCurrentMaxMark() == -1 ? "0" : String.valueOf(course.getCurrentMaxMark()).substring(
+				0, 3);
+		String minMark = course.getCurrentMinMark() == -1 ? "0" : String.valueOf(course.getCurrentMaxMark()).substring(
+				0, 3);
+
+		courseGradeLabel.setText(mark + "0%");
+		courseMaxGradeLabel.setText(maxMark + "0%");
+		courseMinGradeLabel.setText(minMark + "0%");
 
 	}
 }

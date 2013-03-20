@@ -47,7 +47,9 @@ public class CourseListingAdapter extends ArrayAdapter<Course> {
 		Course course = courses.get(pos);
 		holder.courseCode.setText(course.getCourseCode());
 		holder.courseName.setText(course.getCourseName());
-		holder.courseMark.setText(Integer.toString((int) course.getCurrentMark()) + "%");
+		String grade = course.getCurrentMark() == -1 ? "0%" : Float.toString(course.getCurrentMark()).substring(0, 3)
+				+ "0%";
+		holder.courseMark.setText(grade);
 		return row;
 	}
 
