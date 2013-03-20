@@ -3,7 +3,9 @@ package com.currade;
 import java.util.List;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -34,6 +36,7 @@ public class CourseDetailsActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.course_details_page);
 		dbh = new DBHandler(this);
+		setCourse();
 		setAllValues();
 		setAdapterFillTasks();
 		setAdapterListeners();
@@ -105,8 +108,33 @@ public class CourseDetailsActivity extends Activity {
 
 				removeTask.setOnClickListener(new OnClickListener() {
 					@Override
-					public void onClick(View v) {
-						Toast.makeText(v.getContext(), "Remove", Toast.LENGTH_LONG).show();
+					public void onClick(final View v) {
+
+						DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								switch (which) {
+								case DialogInterface.BUTTON_POSITIVE:
+									Task t = courseTasks.get(pos);
+									courseTasks.remove(pos);
+									dbh.deleteTask(t);
+									calculateGrades();
+									setAllValues();
+									adapter.notifyDataSetChanged();
+									setAdapterFillTasks();
+									Toast.makeText(v.getContext(), "Removed", Toast.LENGTH_LONG).show();
+									break;
+								case DialogInterface.BUTTON_NEGATIVE:
+									break;
+								}
+
+							}
+						};
+
+						AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
+						builder.setMessage("Delete this task?").setPositiveButton("Yes", dialogClickListener)
+								.setNegativeButton("No", dialogClickListener).show();
+
 						dialog.dismiss();
 					}
 				});
@@ -200,17 +228,24 @@ public class CourseDetailsActivity extends Activity {
 	}
 
 	private void calculateGrades() {
-		float grade = 0;
-		float totalPercentage = 0;
-		for (Task t : courseTasks) {
-			grade += t.getGrade() * t.getWeight();
-			totalPercentage += t.getWeight();
+
+		if (courseTasks.size() != 0) {
+			float grade = 0;
+			float totalPercentage = 0;
+			for (Task t : courseTasks) {
+				grade += t.getGrade() * t.getWeight();
+				totalPercentage += t.getWeight();
+			}
+			float maxMark = (100 - totalPercentage) + (grade / totalPercentage) * (totalPercentage / 100);
+			float minMark = (grade / 100);
+			course.setCurrentMark(grade / totalPercentage);
+			course.setCurrentMaxMark(maxMark);
+			course.setCurrentMinMark(minMark);
+		} else {
+			course.setCurrentMark(0);
+			course.setCurrentMaxMark(0);
+			course.setCurrentMinMark(0);
 		}
-		float maxMark = (100 - totalPercentage) + (grade / totalPercentage) * (totalPercentage / 100);
-		float minMark = (grade / 100);
-		course.setCurrentMark(grade / totalPercentage);
-		course.setCurrentMaxMark(maxMark);
-		course.setCurrentMinMark(minMark);
 		dbh.updateCourse(course);
 		return;
 	}
@@ -222,21 +257,26 @@ public class CourseDetailsActivity extends Activity {
 		taskListView.setAdapter(adapter);
 	}
 
-	private void setAllValues() {
+	private void setCourse() {
 		Bundle extras = getIntent().getExtras();
 		if (extras != null) {
-			TextView courseCodeLabel = (TextView) findViewById(R.id.courseDetailsCourseCode);
-			TextView courseNameLabel = (TextView) findViewById(R.id.courseDetailsCourseName);
-			TextView courseGradeLabel = (TextView) findViewById(R.id.courseDetailsCurrentGradeValueLabel);
-			TextView courseMaxGradeLabel = (TextView) findViewById(R.id.courseDetailsMaxGradeValueLabel);
-			TextView courseMinGradeLabel = (TextView) findViewById(R.id.courseDetailsMinGradeValueLabel);
-
 			course = dbh.getCourse(extras.getInt("COURSE_ID"));
-			courseCodeLabel.setText(course.getCourseCode());
-			courseNameLabel.setText(course.getCourseName());
-			courseGradeLabel.setText(String.valueOf(course.getCurrentMark()));
-			courseMaxGradeLabel.setText(String.valueOf(course.getCurrentMaxMark()));
-			courseMinGradeLabel.setText(String.valueOf(course.getCurrentMinMark()));
 		}
+	}
+
+	private void setAllValues() {
+
+		TextView courseCodeLabel = (TextView) findViewById(R.id.courseDetailsCourseCode);
+		TextView courseNameLabel = (TextView) findViewById(R.id.courseDetailsCourseName);
+		TextView courseGradeLabel = (TextView) findViewById(R.id.courseDetailsCurrentGradeValueLabel);
+		TextView courseMaxGradeLabel = (TextView) findViewById(R.id.courseDetailsMaxGradeValueLabel);
+		TextView courseMinGradeLabel = (TextView) findViewById(R.id.courseDetailsMinGradeValueLabel);
+
+		courseCodeLabel.setText(course.getCourseCode());
+		courseNameLabel.setText(course.getCourseName());
+		courseGradeLabel.setText(String.valueOf(course.getCurrentMark()));
+		courseMaxGradeLabel.setText(String.valueOf(course.getCurrentMaxMark()));
+		courseMinGradeLabel.setText(String.valueOf(course.getCurrentMinMark()));
+
 	}
 }

@@ -82,9 +82,8 @@ public class DBHandler extends SQLiteOpenHelper {
 				null, null, null);
 		Course course = null;
 		if (cursor.moveToFirst()) {
-			course = new Course(Integer.parseInt(cursor.getString(0)), cursor.getString(1), cursor.getString(2),
-					Float.parseFloat(cursor.getString(3)), Float.parseFloat(cursor.getString(4)),
-					Float.parseFloat(cursor.getString(5)));
+			course = new Course(cursor.getInt(0), cursor.getString(1), cursor.getString(2),
+					cursor.getFloat(3), cursor.getFloat(4), cursor.getFloat(5));
 			cursor.close();
 		}
 		db.close();
@@ -229,7 +228,7 @@ public class DBHandler extends SQLiteOpenHelper {
 
 	}
 
-	public void deleteCourse(Task task) {
+	public void deleteTask(Task task) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		db.delete(TABLE_TASKS, KEY_TASK_ID + " = ?", new String[] { String.valueOf(task.getId()) });
 		db.close();

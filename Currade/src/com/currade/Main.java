@@ -71,7 +71,7 @@ public class Main extends FragmentActivity implements ActionBar.TabListener {
 		setAdapterFillCourses();
 
 		ActionBar.Tab coursesTab = actionBar.newTab().setText("Courses");
-		ActionBar.Tab tasksTab = actionBar.newTab().setText("Tasks");
+		ActionBar.Tab tasksTab = actionBar.newTab().setText("To Do");
 
 		coursesTab.setTabListener(this);
 		tasksTab.setTabListener(this);
