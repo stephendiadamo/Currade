@@ -170,18 +170,18 @@ public class CourseDetailsActivity extends Activity {
 
 								if (!gradeBox.getText().toString().isEmpty()
 										&& (selectedRadioButton.getText().equals("Final") || selectedRadioButton
-												.getText().equals("Predict"))) {
+												.getText().equals("Prediction"))) {
 									try {
 
 										float grade = Float.parseFloat(gradeBox.getText().toString());
 										if (selectedRadioButton.getText().equals("Final")) {
 											courseTasks.get(pos).setGrade(grade);
-											dbh.updateTask(courseTasks.get(pos));
-											adapter.notifyDataSetChanged();
-											setAdapterFillTasks();
 										} else {
-											// TODO: Implement grade prediction
+											courseTasks.get(pos).setApproximatedGrade(grade);
 										}
+										dbh.updateTask(courseTasks.get(pos));
+										adapter.notifyDataSetChanged();
+										setAdapterFillTasks();
 										addGradeDialog.dismiss();
 										dialog.dismiss();
 										calculateGrades();
@@ -192,9 +192,11 @@ public class CourseDetailsActivity extends Activity {
 									}
 
 								} else if (selectedRadioButton.getText().equals("Clear")) {
-									// TODO: Use a better value than 0 for
-									// default
-									courseTasks.get(pos).setGrade(0);
+									if (courseTasks.get(pos).getApproximatedGrade() == -1) {
+										courseTasks.get(pos).setGrade(0);
+									} else {
+										courseTasks.get(pos).setApproximatedGrade(-1);
+									}
 									dbh.updateTask(courseTasks.get(pos));
 									adapter.notifyDataSetChanged();
 									setAdapterFillTasks();
@@ -233,7 +235,11 @@ public class CourseDetailsActivity extends Activity {
 			float grade = 0;
 			float totalPercentage = 0;
 			for (Task t : courseTasks) {
-				grade += t.getGrade() * t.getWeight();
+				if (t.getApproximatedGrade() == -1) {
+					grade += t.getGrade() * t.getWeight();
+				} else {
+					grade += t.getApproximatedGrade() * t.getWeight();
+				}
 				totalPercentage += t.getWeight();
 			}
 			float maxMark = (100 - totalPercentage) + (grade / totalPercentage) * (totalPercentage / 100);
@@ -278,7 +284,7 @@ public class CourseDetailsActivity extends Activity {
 		String mark = course.getCurrentMark() == -1 ? "0" : String.valueOf(course.getCurrentMark()).substring(0, 3);
 		String maxMark = course.getCurrentMaxMark() == -1 ? "0" : String.valueOf(course.getCurrentMaxMark()).substring(
 				0, 3);
-		String minMark = course.getCurrentMinMark() == -1 ? "0" : String.valueOf(course.getCurrentMaxMark()).substring(
+		String minMark = course.getCurrentMinMark() == -1 ? "0" : String.valueOf(course.getCurrentMinMark()).substring(
 				0, 3);
 
 		courseGradeLabel.setText(mark + "0%");

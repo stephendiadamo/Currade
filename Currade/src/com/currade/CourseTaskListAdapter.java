@@ -4,6 +4,7 @@ import java.util.List;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,11 +49,19 @@ public class CourseTaskListAdapter extends ArrayAdapter<Task> {
 		Task task = tasks.get(pos);
 		holder.taskName.setText(task.getName());
 		String weight = Float.toString(task.getWeight()).substring(0, 3) + "0%";
-		String grade = task.getGrade() == -1 ? task.getDueDate() : Float.toString(task.getGrade()).substring(0, 3)
-				+ "0%";
+
+		String grade;
+		if (task.getApproximatedGrade() == -1) {
+			grade = task.getGrade() == -1 ? task.getDueDate() : Float.toString(task.getGrade()).substring(0, 3) + "0%";
+			holder.taskMark.setText(grade);
+		} else {
+			grade = task.getApproximatedGrade() + "0%";
+			holder.taskMark.setText(grade);
+			holder.taskMark.setTextColor(Color.RED);
+		}
 
 		holder.taskWeight.setText("(" + weight + ")");
-		holder.taskMark.setText(grade);
+
 		return row;
 	}
 }
