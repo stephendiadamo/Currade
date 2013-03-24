@@ -14,7 +14,7 @@ import com.currade.objects.Task;
 
 public class DBHandler extends SQLiteOpenHelper {
 
-	private static final int DATABASE_VERSION = 3;
+	private static final int DATABASE_VERSION = 4;
 	private static final String DATABASE_NAME = "coursesManager";
 
 	// Tables
@@ -82,8 +82,8 @@ public class DBHandler extends SQLiteOpenHelper {
 				null, null, null);
 		Course course = null;
 		if (cursor.moveToFirst()) {
-			course = new Course(cursor.getInt(0), cursor.getString(1), cursor.getString(2),
-					cursor.getFloat(3), cursor.getFloat(4), cursor.getFloat(5));
+			course = new Course(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getFloat(3),
+					cursor.getFloat(4), cursor.getFloat(5));
 			cursor.close();
 		}
 		db.close();
@@ -141,6 +141,7 @@ public class DBHandler extends SQLiteOpenHelper {
 	public void deleteCourse(Course course) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		db.delete(TABLE_COURSES, KEY_COURSE_ID + " = ?", new String[] { String.valueOf(course.getId()) });
+		db.delete(TABLE_TASKS, TASK_FOR_WHAT_COURSE + " = ?", new String[] { String.valueOf(course.getCourseCode()) });
 		db.close();
 	}
 
