@@ -84,6 +84,9 @@ public final class R {
         public static final int taskRowTaskMark=0x7f08002f;
         public static final int taskRowTaskName=0x7f08002e;
         public static final int taskRowTaskWeight=0x7f080030;
+        public static final int task_page_add_task=0x7f080040;
+        public static final int task_page_view_monthly=0x7f080041;
+        public static final int task_page_view_weekly=0x7f080042;
         public static final int tasksListView=0x7f08003a;
         public static final int textView2=0x7f080029;
         public static final int textView3=0x7f08002b;
@@ -106,6 +109,7 @@ public final class R {
     public static final class menu {
         public static final int course_detail_items=0x7f070000;
         public static final int home_page_items=0x7f070001;
+        public static final int tasks_page_menu=0x7f070002;
     }
     public static final class string {
         public static final int action_settings=0x7f050001;
@@ -140,6 +144,8 @@ public final class R {
         public static final int title_section1=0x7f050002;
         public static final int title_section2=0x7f050003;
         public static final int title_section3=0x7f050004;
+        public static final int view_monthly=0x7f050021;
+        public static final int view_weekly=0x7f050022;
         public static final int weight=0x7f050015;
     }
     public static final class style {

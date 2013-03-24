@@ -43,6 +43,8 @@ public class Main extends FragmentActivity implements ActionBar.TabListener {
 	private ListView courseListView;
 	List<Course> allCourses;
 	List<Task> allTasks;
+	private boolean onCoursePage = true;
+	Menu optionsMenu;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -65,12 +67,19 @@ public class Main extends FragmentActivity implements ActionBar.TabListener {
 			public void onPageSelected(int position) {
 				if (position == 0) {
 					setAdapterFillCourses();
+					onCoursePage = true;
 					courseListingAdapter.notifyDataSetChanged();
+					if (optionsMenu != null) {
+						optionsMenu.clear();
+						getMenuInflater().inflate(R.menu.home_page_items, optionsMenu);
+					}
 				} else {
 					setAdapterFillTasks();
 					taskListingAdapter.notifyDataSetChanged();
-					//TODO: Change menu options
-
+					if (optionsMenu != null) {
+						optionsMenu.clear();
+						getMenuInflater().inflate(R.menu.tasks_page_menu, optionsMenu);
+					}
 				}
 			}
 		});
@@ -94,6 +103,7 @@ public class Main extends FragmentActivity implements ActionBar.TabListener {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.home_page_items, menu);
+		optionsMenu = menu;
 		// getMenuInflater().inflate(R.menu.main, menu);
 		return super.onCreateOptionsMenu(menu);
 		// return true;
@@ -188,9 +198,9 @@ public class Main extends FragmentActivity implements ActionBar.TabListener {
 		taskListView = (ListView) findViewById(R.id.tasksListView);
 		taskListingAdapter = new TaskListingAdapter(this, R.layout.task_page_row, allTasks);
 		taskListView.setAdapter(taskListingAdapter);
-		
-		//TODO: Set listeners for rows here
-		
+
+		// TODO: Set listeners for rows here
+
 	}
 
 	private void setAdapterListeners() {

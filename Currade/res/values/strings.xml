@@ -34,5 +34,7 @@
     <string name="clear_predictions">Clear Predictions</string>
     <string name="export_data">Export Data</string>
     <string name="import_data">Import Data</string>
+    <string name="view_monthly">View Monthly Schedule</string>
+    <string name="view_weekly">View Weekly Schedule</string>
 
 </resources>
