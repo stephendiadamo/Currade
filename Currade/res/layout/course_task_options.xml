@@ -6,7 +6,8 @@
     <TableRow
         android:id="@+id/courseRemoveTask"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:background="@android:drawable/list_selector_background" >
 
         <TextView
             android:id="@+id/addGradeGradeLabel"
@@ -17,10 +18,16 @@
             android:textAppearance="?android:attr/textAppearanceLarge" />
     </TableRow>
 
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="#000" />
+
     <TableRow
         android:id="@+id/courseEditTask"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:background="@android:drawable/list_selector_background" >
 
         <TextView
             android:id="@+id/textView2"
@@ -31,10 +38,16 @@
             android:textAppearance="?android:attr/textAppearanceLarge" />
     </TableRow>
 
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="#000" />
+
     <TableRow
         android:id="@+id/courseAddGrade"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:background="@android:drawable/list_selector_background" >
 
         <TextView
             android:id="@+id/textView3"
@@ -45,10 +58,16 @@
             android:textAppearance="?android:attr/textAppearanceLarge" />
     </TableRow>
 
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="#000" />
+
     <TableRow
         android:id="@+id/courseCancel"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:background="@android:drawable/list_selector_background" >
 
         <TextView
             android:id="@+id/textView4"
@@ -58,5 +77,10 @@
             android:text="@string/cancel"
             android:textAppearance="?android:attr/textAppearanceLarge" />
     </TableRow>
-</TableLayout>
 
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="#000" />
+
+</TableLayout>

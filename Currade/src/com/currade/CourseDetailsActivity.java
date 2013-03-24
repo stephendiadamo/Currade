@@ -7,6 +7,9 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -227,6 +230,40 @@ public class CourseDetailsActivity extends Activity {
 				dialog.show();
 			}
 		});
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.course_detail_items, menu);
+		return super.onCreateOptionsMenu(menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+
+		super.onOptionsItemSelected(item);
+
+		switch (item.getItemId()) {
+		case R.id.add_task_item:
+			Toast.makeText(getBaseContext(), "Add Task", Toast.LENGTH_SHORT).show();
+			break;
+
+		case R.id.clear_predictions:
+			Toast.makeText(getBaseContext(), "Clear Predictions", Toast.LENGTH_SHORT).show();
+			break;
+
+		case R.id.export_course_data:
+			Toast.makeText(getBaseContext(), "Export Data", Toast.LENGTH_SHORT).show();
+			break;
+
+		case R.id.import_course_data:
+			Toast.makeText(getBaseContext(), "Import Data", Toast.LENGTH_SHORT).show();
+			break;
+
+		}
+		return true;
+
 	}
 
 	private void calculateGrades() {

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <TextView
+        android:id="@+id/taskPageRowTaskName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="4dp"
+        android:text="Assignment 1" />
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="30dp"
+        android:background="#000" >
+    </View>
+
+    <TextView
+        android:id="@+id/taskPageRowCourseCode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="4dp"
+        android:text="CSC318" />
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="30dp"
+        android:background="#000" >
+    </View>
+
+    <TextView
+        android:id="@+id/taskPageRowWeight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="4dp"
+        android:text="15%" />
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="30dp"
+        android:background="#000" >
+    </View>
+
+    <TextView
+        android:id="@+id/taskPageRowDueDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="4dp"
+        android:text="02/03/2013" />
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="30dp"
+        android:background="#000" >
+    </View>
+
+    <TextView
+        android:id="@+id/taskPageRowDaysRemaining"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="2dp"
+        android:text="4" />
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="30dp"
+        android:background="#000" >
+    </View>
+
+    <CheckBox
+        android:id="@+id/taskPageRowCheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" 
+        android:layout_marginLeft="-2dp"/>
+
+</LinearLayout>

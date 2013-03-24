@@ -25,7 +25,6 @@ public final class R {
     }
     public static final class id {
         public static final int CourseNameLabel=0x7f080006;
-        public static final int action_settings=0x7f080034;
         public static final int addCourseButton=0x7f080004;
         public static final int addCourseTaskAddButton=0x7f080016;
         public static final int addCourseTaskCancelButton=0x7f080017;
@@ -44,7 +43,10 @@ public final class R {
         public static final int addGradePredictRadio=0x7f08000c;
         public static final int addGradeRadioGroup=0x7f08000a;
         public static final int addNewCourse=0x7f080032;
+        public static final int add_course=0x7f08003f;
+        public static final int add_task_item=0x7f08003b;
         public static final int cancelAddCourseButton=0x7f080003;
+        public static final int clear_predictions=0x7f08003c;
         public static final int courseAddGrade=0x7f08002a;
         public static final int courseCancel=0x7f08002c;
         public static final int courseCodeInputText=0x7f080007;
@@ -67,13 +69,22 @@ public final class R {
         public static final int courseRowCourseCode=0x7f080024;
         public static final int courseRowCourseMark=0x7f080026;
         public static final int courseRowCourseName=0x7f080025;
+        public static final int export_course_data=0x7f08003d;
         public static final int fragment_container=0x7f080001;
         public static final int fullCourseRow=0x7f080023;
+        public static final int import_course_data=0x7f08003e;
         public static final int pager=0x7f080000;
         public static final int section_label=0x7f080033;
+        public static final int taskPageRowCheckBox=0x7f080039;
+        public static final int taskPageRowCourseCode=0x7f080035;
+        public static final int taskPageRowDaysRemaining=0x7f080038;
+        public static final int taskPageRowDueDate=0x7f080037;
+        public static final int taskPageRowTaskName=0x7f080034;
+        public static final int taskPageRowWeight=0x7f080036;
         public static final int taskRowTaskMark=0x7f08002f;
         public static final int taskRowTaskName=0x7f08002e;
         public static final int taskRowTaskWeight=0x7f080030;
+        public static final int tasksListView=0x7f08003a;
         public static final int textView2=0x7f080029;
         public static final int textView3=0x7f08002b;
         public static final int textView4=0x7f08002d;
@@ -89,12 +100,12 @@ public final class R {
         public static final int course_task_row=0x7f030007;
         public static final int courses_page=0x7f030008;
         public static final int fragment_main_dummy=0x7f030009;
-        public static final int tasks_page=0x7f03000a;
+        public static final int task_page_row=0x7f03000a;
+        public static final int tasks_page=0x7f03000b;
     }
     public static final class menu {
-        public static final int courses_page=0x7f070000;
-        public static final int main=0x7f070001;
-        public static final int tasks_page=0x7f070002;
+        public static final int course_detail_items=0x7f070000;
+        public static final int home_page_items=0x7f070001;
     }
     public static final class string {
         public static final int action_settings=0x7f050001;
@@ -105,6 +116,7 @@ public final class R {
         public static final int app_name=0x7f050000;
         public static final int cancel=0x7f050010;
         public static final int clear=0x7f05001c;
+        public static final int clear_predictions=0x7f05001e;
         public static final int courseCode=0x7f05000c;
         public static final int courseName=0x7f05000d;
         public static final int courses=0x7f050008;
@@ -112,9 +124,11 @@ public final class R {
         public static final int done=0x7f05001d;
         public static final int dueDate=0x7f050014;
         public static final int edit_task=0x7f050017;
+        public static final int export_data=0x7f05001f;
         public static final int finalString=0x7f05001a;
         public static final int grade=0x7f050019;
         public static final int hello_world=0x7f050006;
+        public static final int import_data=0x7f050020;
         public static final int maxPossibleGrade=0x7f050012;
         public static final int minPossibleGrade=0x7f050013;
         public static final int prediction=0x7f05001b;

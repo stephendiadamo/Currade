@@ -16,6 +16,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -27,6 +29,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.currade.objects.Course;
+import com.currade.objects.Task;
 import com.currage.db.DBHandler;
 
 public class Main extends FragmentActivity implements ActionBar.TabListener {
@@ -34,9 +37,12 @@ public class Main extends FragmentActivity implements ActionBar.TabListener {
 	SectionsPagerAdapter mSectionsPagerAdapter;
 	ViewPager mViewPager;
 	private DBHandler dbh;
-	private CourseListingAdapter adapter;
+	private CourseListingAdapter courseListingAdapter;
+	private TaskListingAdapter taskListingAdapter;
+	private ListView taskListView;
 	private ListView courseListView;
 	List<Course> allCourses;
+	List<Task> allTasks;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -59,9 +65,12 @@ public class Main extends FragmentActivity implements ActionBar.TabListener {
 			public void onPageSelected(int position) {
 				if (position == 0) {
 					setAdapterFillCourses();
-					adapter.notifyDataSetChanged();
+					courseListingAdapter.notifyDataSetChanged();
 				} else {
-					setContentView(R.layout.tasks_page);
+					setAdapterFillTasks();
+					taskListingAdapter.notifyDataSetChanged();
+					//TODO: Change menu options
+
 				}
 			}
 		});
@@ -83,8 +92,25 @@ public class Main extends FragmentActivity implements ActionBar.TabListener {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.home_page_items, menu);
+		// getMenuInflater().inflate(R.menu.main, menu);
+		return super.onCreateOptionsMenu(menu);
+		// return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+
+		super.onOptionsItemSelected(item);
+
+		switch (item.getItemId()) {
+		case R.id.add_course:
+			addNewCourse();
+			break;
+		}
 		return true;
+
 	}
 
 	@Override
@@ -151,9 +177,20 @@ public class Main extends FragmentActivity implements ActionBar.TabListener {
 		setContentView(R.layout.courses_page);
 		allCourses = dbh.getAllCourses();
 		courseListView = (ListView) findViewById(R.id.courseListView);
-		adapter = new CourseListingAdapter(this, R.layout.course_row, allCourses);
-		courseListView.setAdapter(adapter);
+		courseListingAdapter = new CourseListingAdapter(this, R.layout.course_row, allCourses);
+		courseListView.setAdapter(courseListingAdapter);
 		setAdapterListeners();
+	}
+
+	private void setAdapterFillTasks() {
+		setContentView(R.layout.tasks_page);
+		allTasks = dbh.getAllTasks();
+
+		taskListView = (ListView) findViewById(R.id.tasksListView);
+		taskListingAdapter = new TaskListingAdapter(this, R.layout.task_page_row, allTasks);
+		taskListView.setAdapter(taskListingAdapter);
+
+		//setAdapterListeners();
 	}
 
 	private void setAdapterListeners() {
@@ -168,7 +205,7 @@ public class Main extends FragmentActivity implements ActionBar.TabListener {
 						case DialogInterface.BUTTON_POSITIVE:
 							dbh.deleteCourse(getCourseFromPos(pos));
 							removeFromCourses(pos);
-							adapter.notifyDataSetChanged();
+							courseListingAdapter.notifyDataSetChanged();
 							break;
 						default:
 							break;
@@ -196,15 +233,13 @@ public class Main extends FragmentActivity implements ActionBar.TabListener {
 				intent.putExtra("COURSE_NAME", c.getCourseName());
 				startActivity(intent);
 			}
-
 		});
-
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
-		adapter.notifyDataSetChanged();
+		courseListingAdapter.notifyDataSetChanged();
 		setAdapterFillCourses();
 	}
 
@@ -220,42 +255,46 @@ public class Main extends FragmentActivity implements ActionBar.TabListener {
 	public void onClickCourse(View v) {
 		switch (v.getId()) {
 		case R.id.addNewCourse:
-			final Dialog dialog = new Dialog(this);
-			dialog.setContentView(R.layout.add_course);
-			dialog.setTitle("Add Course");
-
-			Button cancelCourse = (Button) dialog.findViewById(R.id.cancelAddCourseButton);
-			cancelCourse.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					dialog.dismiss();
-				}
-			});
-
-			Button addCourse = (Button) dialog.findViewById(R.id.addCourseButton);
-			addCourse.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					EditText courseCode = (EditText) dialog.findViewById(R.id.courseCodeInputText);
-					EditText courseName = (EditText) dialog.findViewById(R.id.courseNameInputText);
-
-					if (!courseCode.getText().toString().isEmpty()) {
-						Course course = new Course();
-						course.setCourseCode(courseCode.getText().toString());
-						course.setCourseName(courseName.getText().toString());
-						course.setCurrentMark(-1);
-						course.setCurrentMaxMark(-1);
-						course.setCurrentMinMark(-1);
-						dbh.addCourse(course);
-						adapter.notifyDataSetChanged();
-						setAdapterFillCourses();
-						dialog.dismiss();
-					} else {
-						Toast.makeText(v.getContext(), "Please add a course code.", Toast.LENGTH_LONG).show();
-					}
-				}
-			});
-			dialog.show();
+			addNewCourse();
 		}
+	}
+
+	private void addNewCourse() {
+		final Dialog dialog = new Dialog(this);
+		dialog.setContentView(R.layout.add_course);
+		dialog.setTitle("Add Course");
+
+		Button cancelCourse = (Button) dialog.findViewById(R.id.cancelAddCourseButton);
+		cancelCourse.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				dialog.dismiss();
+			}
+		});
+
+		Button addCourse = (Button) dialog.findViewById(R.id.addCourseButton);
+		addCourse.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				EditText courseCode = (EditText) dialog.findViewById(R.id.courseCodeInputText);
+				EditText courseName = (EditText) dialog.findViewById(R.id.courseNameInputText);
+
+				if (!courseCode.getText().toString().isEmpty()) {
+					Course course = new Course();
+					course.setCourseCode(courseCode.getText().toString());
+					course.setCourseName(courseName.getText().toString());
+					course.setCurrentMark(-1);
+					course.setCurrentMaxMark(-1);
+					course.setCurrentMinMark(-1);
+					dbh.addCourse(course);
+					courseListingAdapter.notifyDataSetChanged();
+					setAdapterFillCourses();
+					dialog.dismiss();
+				} else {
+					Toast.makeText(v.getContext(), "Please add a course code.", Toast.LENGTH_LONG).show();
+				}
+			}
+		});
+		dialog.show();
 	}
 }

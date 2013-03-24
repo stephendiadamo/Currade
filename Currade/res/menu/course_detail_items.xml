@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/add_task_item"
+        android:showAsAction="collapseActionView|withText"
+        android:title="@string/addTask"/>
+    <item
+        android:id="@+id/clear_predictions"
+        android:showAsAction="collapseActionView|withText"
+        android:title="@string/clear_predictions"/>
+    <item
+        android:id="@+id/export_course_data"
+        android:showAsAction="collapseActionView|withText"
+        android:title="@string/export_data"/>
+    <item
+        android:id="@+id/import_course_data"
+        android:showAsAction="collapseActionView|withText"
+        android:title="@string/import_data"/>
+
+</menu>
