@@ -5,9 +5,9 @@
 
     <TextView
         android:id="@+id/taskPageRowTaskName"
-        android:layout_width="wrap_content"
+        android:layout_width="95dp"
         android:layout_height="wrap_content"
-        android:padding="4dp"
+        android:padding="2dp"
         android:text="Assignment 1" />
 
     <View
@@ -18,9 +18,9 @@
 
     <TextView
         android:id="@+id/taskPageRowCourseCode"
-        android:layout_width="wrap_content"
+        android:layout_width="60dp"
         android:layout_height="wrap_content"
-        android:padding="4dp"
+        android:padding="2dp"
         android:text="CSC318" />
 
     <View
@@ -31,9 +31,9 @@
 
     <TextView
         android:id="@+id/taskPageRowWeight"
-        android:layout_width="wrap_content"
+        android:layout_width="45dp"
         android:layout_height="wrap_content"
-        android:padding="4dp"
+        android:padding="2dp"
         android:text="15%" />
 
     <View
@@ -44,9 +44,9 @@
 
     <TextView
         android:id="@+id/taskPageRowDueDate"
-        android:layout_width="wrap_content"
+        android:layout_width="80dp"
         android:layout_height="wrap_content"
-        android:padding="4dp"
+        android:padding="2dp"
         android:text="02/03/2013" />
 
     <View
@@ -57,7 +57,7 @@
 
     <TextView
         android:id="@+id/taskPageRowDaysRemaining"
-        android:layout_width="wrap_content"
+        android:layout_width="15dp"
         android:layout_height="wrap_content"
         android:padding="2dp"
         android:text="4" />

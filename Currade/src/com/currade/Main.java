@@ -185,12 +185,12 @@ public class Main extends FragmentActivity implements ActionBar.TabListener {
 	private void setAdapterFillTasks() {
 		setContentView(R.layout.tasks_page);
 		allTasks = dbh.getAllTasks();
-
 		taskListView = (ListView) findViewById(R.id.tasksListView);
 		taskListingAdapter = new TaskListingAdapter(this, R.layout.task_page_row, allTasks);
 		taskListView.setAdapter(taskListingAdapter);
-
-		//setAdapterListeners();
+		
+		//TODO: Set listeners for rows here
+		
 	}
 
 	private void setAdapterListeners() {
