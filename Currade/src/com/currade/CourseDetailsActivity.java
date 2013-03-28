@@ -1,6 +1,8 @@
 package com.currade;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -13,9 +15,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnFocusChangeListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
+import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RadioButton;
@@ -52,7 +56,6 @@ public class CourseDetailsActivity extends Activity {
 			public void onClick(View v) {
 				addTask(v.getContext());
 			}
-
 		});
 
 	}
@@ -79,12 +82,39 @@ public class CourseDetailsActivity extends Activity {
 			}
 		});
 
+		final EditText dueDate = (EditText) dialog.findViewById(R.id.addCourseTaskDueDateTextBox);
+		dueDate.setOnFocusChangeListener(new OnFocusChangeListener() {
+
+			@Override
+			public void onFocusChange(View v, boolean hasFocus) {
+				if (hasFocus) {
+					AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
+					View view = getLayoutInflater().inflate(R.layout.select_date, null);
+					builder.setView(view);
+					final AlertDialog dateDialog = builder.create();
+					Button dateDone = (Button) view.findViewById(R.id.selectDateDoneButton);
+					dateDone.setOnClickListener(new OnClickListener() {
+
+						@Override
+						public void onClick(View v) {
+							CalendarView cal = (CalendarView) dateDialog.findViewById(R.id.selectDateCalendar);
+							SimpleDateFormat sdf = new SimpleDateFormat("yy-MM-dd", Locale.CANADA);
+							String curDate = sdf.format(cal.getDate());
+							dueDate.setText(curDate.toString());
+							dateDialog.dismiss();
+						}
+					});
+
+					dateDialog.show();
+				}
+			}
+		});
+
 		Button addCourse = (Button) dialog.findViewById(R.id.addCourseTaskAddButton);
 		addCourse.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				EditText taskName = (EditText) dialog.findViewById(R.id.addCourseTaskTaskNameTextBox);
-				EditText dueDate = (EditText) dialog.findViewById(R.id.addCourseTaskDueDateTextBox);
 				EditText weight = (EditText) dialog.findViewById(R.id.addCourseTaskWeightTextBox);
 
 				boolean someEmpty = taskName.getText().toString().isEmpty() || dueDate.getText().toString().isEmpty()
@@ -266,7 +296,7 @@ public class CourseDetailsActivity extends Activity {
 
 		switch (item.getItemId()) {
 		case R.id.add_task_item:
-			addTask(this);			
+			addTask(this);
 			break;
 
 		case R.id.clear_predictions:
