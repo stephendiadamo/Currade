@@ -11,20 +11,10 @@
     <ListView
         android:id="@+id/courseListView"
         android:layout_width="fill_parent"
-        android:layout_height="335dp"
-        android:layout_alignLeft="@+id/addNewCourse"
+        android:layout_height="365dp"
         android:cacheColorHint="#000"
         android:divider="#000"
         android:dividerHeight="2dp" >
     </ListView>
-
-    <Button
-        android:id="@+id/addNewCourse"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:onClick="onClickCourse"
-        android:text="@string/addCourse" />
 
 </RelativeLayout>

@@ -98,16 +98,18 @@
         android:layout_below="@+id/courseDetailsCourseCode"
         android:layout_centerHorizontal="true"
         android:text="Course Name"
+        android:textAlignment="center"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <Button
         android:id="@+id/courseDetailsAddNewTaskButton"
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="35dp"
         android:layout_alignBaseline="@+id/courseDetailsTaskLabel"
         android:layout_alignBottom="@+id/courseDetailsTaskLabel"
-        android:layout_toRightOf="@+id/courseDetailsCourseName"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/courseDetailsCourseName"
         android:text="@string/addTask" />
 
 </RelativeLayout>

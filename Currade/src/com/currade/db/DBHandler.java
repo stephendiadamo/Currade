@@ -1,4 +1,4 @@
-package com.currage.db;
+package com.currade.db;
 
 import java.util.ArrayList;
 import java.util.List;

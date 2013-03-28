@@ -13,5 +13,4 @@
         android:id="@+id/task_page_view_weekly"
         android:showAsAction="collapseActionView|withText"
         android:title="@string/view_weekly"/>
-
 </menu>

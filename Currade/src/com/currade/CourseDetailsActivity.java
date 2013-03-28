@@ -5,6 +5,7 @@ import java.util.List;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.Menu;
@@ -23,9 +24,9 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.currade.db.DBHandler;
 import com.currade.objects.Course;
 import com.currade.objects.Task;
-import com.currage.db.DBHandler;
 
 public class CourseDetailsActivity extends Activity {
 
@@ -49,51 +50,70 @@ public class CourseDetailsActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
+				addTask(v.getContext());
+			}
 
-				final Dialog dialog = new Dialog(v.getContext());
-				dialog.setContentView(R.layout.add_task_from_course);
-				dialog.setTitle("Add Task");
+		});
 
-				Button cancelCourse = (Button) dialog.findViewById(R.id.addCourseTaskCancelButton);
-				cancelCourse.setOnClickListener(new OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						dialog.dismiss();
-					}
-				});
+	}
 
-				Button addCourse = (Button) dialog.findViewById(R.id.addCourseTaskAddButton);
-				addCourse.setOnClickListener(new OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						EditText taskName = (EditText) dialog.findViewById(R.id.addCourseTaskTaskNameTextBox);
-						EditText dueDate = (EditText) dialog.findViewById(R.id.addCourseTaskDueDateTextBox);
-						EditText weight = (EditText) dialog.findViewById(R.id.addCourseTaskWeightTextBox);
+	private boolean doesNotExceedHundred(float nextTaskWeight) {
+		float totalWeight = 0;
+		for (Task t : courseTasks) {
+			totalWeight += t.getWeight();
+		}
+		totalWeight += nextTaskWeight;
+		return (totalWeight <= 100);
+	}
 
-						boolean someEmpty = taskName.getText().toString().isEmpty()
-								|| dueDate.getText().toString().isEmpty() || weight.getText().toString().isEmpty();
+	private void addTask(Context c) {
+		final Dialog dialog = new Dialog(c);
+		dialog.setContentView(R.layout.add_task_from_course);
+		dialog.setTitle("Add Task");
 
-						if (!someEmpty) {
-							Task task = new Task();
-							task.setName(taskName.getText().toString());
-							task.setDueDate(dueDate.getText().toString());
-							task.setWeight(Float.parseFloat(weight.getText().toString()));
-							task.setForWhatCourse(course.getCourseCode());
-							task.setGrade(-1);
-							task.setApproximatedGrade(-1);
-							dbh.addTask(task);
-							adapter.notifyDataSetChanged();
-							setAdapterFillTasks();
-							dialog.dismiss();
-						} else {
-							Toast.makeText(v.getContext(), "Please fill in all the fields.", Toast.LENGTH_LONG).show();
-						}
-					}
-				});
-				dialog.show();
+		Button cancelCourse = (Button) dialog.findViewById(R.id.addCourseTaskCancelButton);
+		cancelCourse.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				dialog.dismiss();
 			}
 		});
 
+		Button addCourse = (Button) dialog.findViewById(R.id.addCourseTaskAddButton);
+		addCourse.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				EditText taskName = (EditText) dialog.findViewById(R.id.addCourseTaskTaskNameTextBox);
+				EditText dueDate = (EditText) dialog.findViewById(R.id.addCourseTaskDueDateTextBox);
+				EditText weight = (EditText) dialog.findViewById(R.id.addCourseTaskWeightTextBox);
+
+				boolean someEmpty = taskName.getText().toString().isEmpty() || dueDate.getText().toString().isEmpty()
+						|| weight.getText().toString().isEmpty();
+
+				if (!someEmpty) {
+					if (doesNotExceedHundred(Float.parseFloat(weight.getText().toString()))) {
+						Task task = new Task();
+						task.setName(taskName.getText().toString());
+						task.setDueDate(dueDate.getText().toString());
+						task.setWeight(Float.parseFloat(weight.getText().toString()));
+						task.setForWhatCourse(course.getCourseCode());
+						task.setGrade(-1);
+						task.setApproximatedGrade(-1);
+						dbh.addTask(task);
+						adapter.notifyDataSetChanged();
+						setAdapterFillTasks();
+					} else {
+						Toast.makeText(v.getContext(), "This task exceeds 100% of the course", Toast.LENGTH_LONG)
+								.show();
+					}
+					dialog.dismiss();
+				} else {
+					Toast.makeText(v.getContext(), "Please fill in all the fields.", Toast.LENGTH_LONG).show();
+				}
+			}
+
+		});
+		dialog.show();
 	}
 
 	private void setAdapterListeners() {
@@ -163,7 +183,7 @@ public class CourseDetailsActivity extends Activity {
 						final EditText gradeBox = (EditText) addGradeDialog.findViewById(R.id.addGradeGradeBox);
 						final RadioGroup whatToDo = (RadioGroup) addGradeDialog.findViewById(R.id.addGradeRadioGroup);
 						whatToDo.check(R.id.addGradeFinalRadio);
-						gradeBox.setText("0%");
+						gradeBox.setText("");
 						addGradeDone.setOnClickListener(new OnClickListener() {
 
 							@Override
@@ -196,7 +216,7 @@ public class CourseDetailsActivity extends Activity {
 
 								} else if (selectedRadioButton.getText().equals("Clear")) {
 									if (courseTasks.get(pos).getApproximatedGrade() == -1) {
-										courseTasks.get(pos).setGrade(0);
+										courseTasks.get(pos).setGrade(-1);
 									} else {
 										courseTasks.get(pos).setApproximatedGrade(-1);
 									}
@@ -246,11 +266,29 @@ public class CourseDetailsActivity extends Activity {
 
 		switch (item.getItemId()) {
 		case R.id.add_task_item:
-			Toast.makeText(getBaseContext(), "Add Task", Toast.LENGTH_SHORT).show();
+			addTask(this);			
 			break;
 
 		case R.id.clear_predictions:
-			Toast.makeText(getBaseContext(), "Clear Predictions", Toast.LENGTH_SHORT).show();
+			DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					switch (which) {
+					case DialogInterface.BUTTON_POSITIVE:
+						clearPredictedGrades();
+						calculateGrades();
+						adapter.notifyDataSetChanged();
+						setAdapterFillTasks();
+						setAllValues();
+						break;
+					case DialogInterface.BUTTON_NEGATIVE:
+						break;
+					}
+				}
+			};
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			builder.setMessage("Remove all predicted grades?").setPositiveButton("Yes", dialogClickListener)
+					.setNegativeButton("No", dialogClickListener).show();
 			break;
 
 		case R.id.export_course_data:
@@ -266,18 +304,29 @@ public class CourseDetailsActivity extends Activity {
 
 	}
 
-	private void calculateGrades() {
+	private void clearPredictedGrades() {
+		if (courseTasks.size() != 0) {
+			for (Task t : courseTasks) {
+				if (t.getApproximatedGrade() != -1) {
+					t.setApproximatedGrade(-1);
+					dbh.updateTask(t);
+				}
+			}
+		}
+	}
 
+	private void calculateGrades() {
 		if (courseTasks.size() != 0) {
 			float grade = 0;
 			float totalPercentage = 0;
 			for (Task t : courseTasks) {
-				if (t.getApproximatedGrade() == -1) {
+				if (t.getApproximatedGrade() == -1 && t.getGrade() != -1) {
 					grade += t.getGrade() * t.getWeight();
-				} else {
+					totalPercentage += t.getWeight();
+				} else if (t.getApproximatedGrade() != -1) {
 					grade += t.getApproximatedGrade() * t.getWeight();
+					totalPercentage += t.getWeight();
 				}
-				totalPercentage += t.getWeight();
 			}
 			float maxMark = (100 - totalPercentage) + (grade / totalPercentage) * (totalPercentage / 100);
 			float minMark = (grade / 100);

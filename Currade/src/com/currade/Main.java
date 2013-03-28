@@ -28,9 +28,9 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.currade.db.DBHandler;
 import com.currade.objects.Course;
 import com.currade.objects.Task;
-import com.currage.db.DBHandler;
 
 public class Main extends FragmentActivity implements ActionBar.TabListener {
 
@@ -43,7 +43,6 @@ public class Main extends FragmentActivity implements ActionBar.TabListener {
 	private ListView courseListView;
 	List<Course> allCourses;
 	List<Task> allTasks;
-	private boolean onCoursePage = true;
 	Menu optionsMenu;
 
 	@Override
@@ -67,7 +66,6 @@ public class Main extends FragmentActivity implements ActionBar.TabListener {
 			public void onPageSelected(int position) {
 				if (position == 0) {
 					setAdapterFillCourses();
-					onCoursePage = true;
 					courseListingAdapter.notifyDataSetChanged();
 					if (optionsMenu != null) {
 						optionsMenu.clear();
@@ -259,14 +257,6 @@ public class Main extends FragmentActivity implements ActionBar.TabListener {
 
 	private void removeFromCourses(int pos) {
 		allCourses.remove(pos);
-	}
-
-	// Course fragment actions
-	public void onClickCourse(View v) {
-		switch (v.getId()) {
-		case R.id.addNewCourse:
-			addNewCourse();
-		}
 	}
 
 	private void addNewCourse() {
