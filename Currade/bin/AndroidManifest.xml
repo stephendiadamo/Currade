@@ -3,41 +3,38 @@
     package="com.currade"
     android:versionCode="1"
     android:versionName="1.0" >
-
+    
     <uses-sdk
         android:minSdkVersion="14"
         android:targetSdkVersion="17" />
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@drawable/hat"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
-        <activity
+        android:theme="@style/AppTheme">
+        	<activity
             android:name="com.currade.Main"
-            android:label="@string/app_name"
-            android:screenOrientation="portrait" >
+            android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name="com.currade.CoursesPage"
-            android:label="@string/title_activity_courses_page"
-            android:screenOrientation="portrait" >
+            android:label="@string/title_activity_courses_page" >
         </activity>
         <activity
             android:name="com.currade.TasksPage"
-            android:label="@string/title_activity_tasks_page"
-            android:screenOrientation="portrait" >
+            android:label="@string/title_activity_tasks_page">
         </activity>
         <activity
             android:name="com.currade.CourseDetailsActivity"
-            android:label="@string/courses"
-            android:screenOrientation="portrait" >
+            android:label="@string/courses" >
         </activity>
+        
+        
     </application>
 
 </manifest>
