@@ -24,12 +24,13 @@
 
     <TextView
         android:id="@+id/courseRowCourseMark"
-        android:layout_width="150dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:paddingTop="20dp"
         android:text="WORLD"
+        android:textAlignment="inherit"
         android:textSize="15sp" />
 
 </RelativeLayout>

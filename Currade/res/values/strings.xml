@@ -36,5 +36,6 @@
     <string name="import_data">Import Data</string>
     <string name="view_monthly">View Monthly Schedule</string>
     <string name="view_weekly">View Weekly Schedule</string>
+    <string name="finish_task">Finish Selected Tasks</string>
 
 </resources>

@@ -33,7 +33,7 @@ public class TaskListingAdapter extends ArrayAdapter<Task> {
 		TextView taskName;
 		TextView weight;
 		TextView date;
-		TextView daysLeft;
+		// TextView daysLeft;
 		CheckBox isDone;
 		TaskHolder holder;
 
@@ -45,10 +45,9 @@ public class TaskListingAdapter extends ArrayAdapter<Task> {
 			taskName = (TextView) row.findViewById(R.id.taskPageRowTaskName);
 			weight = (TextView) row.findViewById(R.id.taskPageRowWeight);
 			date = (TextView) row.findViewById(R.id.taskPageRowDueDate);
-			daysLeft = (TextView) row.findViewById(R.id.taskPageRowDaysRemaining);
 			isDone = (CheckBox) row.findViewById(R.id.taskPageRowCheckBox);
 
-			holder = new TaskHolder(taskName, courseCode, weight, date, daysLeft, isDone);
+			holder = new TaskHolder(taskName, courseCode, weight, date, isDone);
 			row.setTag(holder);
 		} else {
 			holder = (TaskHolder) row.getTag();
@@ -60,7 +59,7 @@ public class TaskListingAdapter extends ArrayAdapter<Task> {
 		holder.weight.setText(String.valueOf(task.getWeight()) + "%");
 		holder.date.setText(task.getDueDate());
 		// TODO: Implement days left
-		holder.daysLeft.setText("5");
+		// holder.daysLeft.setText("5");
 		return row;
 	}
 

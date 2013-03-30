@@ -72,6 +72,7 @@ public class Main extends FragmentActivity implements ActionBar.TabListener {
 						getMenuInflater().inflate(R.menu.home_page_items, optionsMenu);
 					}
 				} else {
+					
 					setAdapterFillTasks();
 					taskListingAdapter.notifyDataSetChanged();
 					if (optionsMenu != null) {
@@ -116,9 +117,23 @@ public class Main extends FragmentActivity implements ActionBar.TabListener {
 		case R.id.add_course:
 			addNewCourse();
 			break;
-		}
+		case R.id.task_page_add_task:
+			Toast.makeText(this, "Add Task", Toast.LENGTH_LONG).show();
+			break;
+		case R.id.task_page_finish_task:
+			clearSelectedTasks();
+			break;
+		
+		} 
 		return true;
 
+	}
+	
+	private void clearSelectedTasks(){
+		
+		// TODO: Implement this
+		// http://www.mysamplecode.com/2012/07/android-listview-checkbox-example.html
+		
 	}
 
 	@Override

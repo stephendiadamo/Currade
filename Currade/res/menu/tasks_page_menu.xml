@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
-
     <item
         android:id="@+id/task_page_add_task"
-        android:showAsAction="collapseActionView|withText"
+        android:showAsAction="ifRoom|collapseActionView"
         android:title="@string/addTask"/>
+    <item
+        android:id="@+id/task_page_finish_task"
+        android:showAsAction="collapseActionView|withText"
+        android:title="@string/finish_task"/>
     <item
         android:id="@+id/task_page_view_monthly"
         android:showAsAction="collapseActionView|withText"
