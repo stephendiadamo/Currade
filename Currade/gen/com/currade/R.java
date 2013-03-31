@@ -43,10 +43,10 @@ public final class R {
         public static final int addGradeGradeLabel=0x7f080008;
         public static final int addGradePredictRadio=0x7f08000c;
         public static final int addGradeRadioGroup=0x7f08000a;
-        public static final int add_course=0x7f080045;
-        public static final int add_task_item=0x7f080041;
+        public static final int add_course=0x7f08004c;
+        public static final int add_task_item=0x7f080048;
         public static final int cancelAddCourseButton=0x7f080003;
-        public static final int clear_predictions=0x7f080042;
+        public static final int clear_predictions=0x7f080049;
         public static final int courseAddGrade=0x7f08002a;
         public static final int courseCancel=0x7f08002c;
         public static final int courseCodeInputText=0x7f080006;
@@ -69,7 +69,7 @@ public final class R {
         public static final int courseRowCourseCode=0x7f080024;
         public static final int courseRowCourseMark=0x7f080026;
         public static final int courseRowCourseName=0x7f080025;
-        public static final int export_course_data=0x7f080043;
+        public static final int export_course_data=0x7f08004a;
         public static final int fragment_container=0x7f080001;
         public static final int fullCourseRow=0x7f080023;
         public static final int headerCode=0x7f08003c;
@@ -78,7 +78,7 @@ public final class R {
         public static final int headerName=0x7f08003b;
         public static final int headerRow=0x7f08003a;
         public static final int headerWeight=0x7f08003d;
-        public static final int import_course_data=0x7f080044;
+        public static final int import_course_data=0x7f08004b;
         public static final int pager=0x7f080000;
         public static final int section_label=0x7f080032;
         public static final int selectDateCalendar=0x7f080033;
@@ -91,14 +91,21 @@ public final class R {
         public static final int taskRowTaskMark=0x7f08002f;
         public static final int taskRowTaskName=0x7f08002e;
         public static final int taskRowTaskWeight=0x7f080030;
-        public static final int task_page_add_task=0x7f080046;
-        public static final int task_page_finish_task=0x7f080047;
-        public static final int task_page_view_monthly=0x7f080048;
-        public static final int task_page_view_weekly=0x7f080049;
+        public static final int task_page_add_task=0x7f08004d;
+        public static final int task_page_finish_task=0x7f08004e;
+        public static final int task_page_view_monthly=0x7f08004f;
+        public static final int task_page_view_weekly=0x7f080050;
         public static final int tasksListView=0x7f080040;
+        public static final int textView1=0x7f080041;
         public static final int textView2=0x7f080029;
         public static final int textView3=0x7f08002b;
         public static final int textView4=0x7f08002d;
+        public static final int todo_add_task_cancel=0x7f080045;
+        public static final int todo_add_task_course_code_spinner=0x7f080043;
+        public static final int todo_add_task_done=0x7f080046;
+        public static final int todo_add_task_due_date=0x7f080047;
+        public static final int todo_add_task_task_name=0x7f080042;
+        public static final int todo_add_task_weight=0x7f080044;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
@@ -114,6 +121,7 @@ public final class R {
         public static final int select_date=0x7f03000a;
         public static final int task_page_row=0x7f03000b;
         public static final int tasks_page=0x7f03000c;
+        public static final int todo_add_task=0x7f03000d;
     }
     public static final class menu {
         public static final int course_detail_items=0x7f070000;

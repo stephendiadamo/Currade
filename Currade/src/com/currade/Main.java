@@ -1,5 +1,7 @@
 package com.currade;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -20,12 +22,16 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnFocusChangeListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.currade.db.DBHandler;
@@ -72,7 +78,7 @@ public class Main extends FragmentActivity implements ActionBar.TabListener {
 						getMenuInflater().inflate(R.menu.home_page_items, optionsMenu);
 					}
 				} else {
-					
+
 					setAdapterFillTasks();
 					taskListingAdapter.notifyDataSetChanged();
 					if (optionsMenu != null) {
@@ -118,22 +124,22 @@ public class Main extends FragmentActivity implements ActionBar.TabListener {
 			addNewCourse();
 			break;
 		case R.id.task_page_add_task:
-			Toast.makeText(this, "Add Task", Toast.LENGTH_LONG).show();
+			addNewTask();
 			break;
 		case R.id.task_page_finish_task:
 			clearSelectedTasks();
 			break;
-		
-		} 
+
+		}
 		return true;
 
 	}
-	
-	private void clearSelectedTasks(){
-		
+
+	private void clearSelectedTasks() {
+
 		// TODO: Implement this
 		// http://www.mysamplecode.com/2012/07/android-listview-checkbox-example.html
-		
+
 	}
 
 	@Override
@@ -310,6 +316,86 @@ public class Main extends FragmentActivity implements ActionBar.TabListener {
 				}
 			}
 		});
+		dialog.show();
+	}
+
+	private void addNewTask() {
+		final Dialog dialog = new Dialog(this);
+		dialog.setContentView(R.layout.todo_add_task);
+		dialog.setTitle("Add Task");
+
+		Button cancelCourse = (Button) dialog.findViewById(R.id.todo_add_task_cancel);
+		cancelCourse.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				dialog.dismiss();
+			}
+		});
+
+		final Spinner currentCoursesSpinner = (Spinner) dialog.findViewById(R.id.todo_add_task_course_code_spinner);
+		List<String> codes = new ArrayList<String>();
+		codes.add("None");
+		for (Course c : allCourses) {
+			codes.add(c.getCourseCode());
+		}
+		ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(currentCoursesSpinner.getContext(),
+				android.R.layout.simple_spinner_item, codes);
+		currentCoursesSpinner.setAdapter(spinnerArrayAdapter);
+
+		Button addCourse = (Button) dialog.findViewById(R.id.todo_add_task_done);
+		final EditText dueDate = (EditText) dialog.findViewById(R.id.todo_add_task_due_date);
+
+		dueDate.setOnFocusChangeListener(new OnFocusChangeListener() {
+			@Override
+			public void onFocusChange(View v, boolean hasFocus) {
+
+				if (hasFocus) {
+					AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
+					View view = getLayoutInflater().inflate(R.layout.select_date, null);
+					builder.setView(view);
+					final AlertDialog dateDialog = builder.create();
+					Button dateDone = (Button) view.findViewById(R.id.selectDateDoneButton);
+					dateDone.setOnClickListener(new OnClickListener() {
+
+						@Override
+						public void onClick(View v) {
+							CalendarView cal = (CalendarView) dateDialog.findViewById(R.id.selectDateCalendar);
+							SimpleDateFormat sdf = new SimpleDateFormat("yy-MM-dd", Locale.CANADA);
+							String curDate = sdf.format(cal.getDate());
+							dueDate.setText(curDate.toString());
+							dateDialog.dismiss();
+						}
+					});
+					dateDialog.show();
+				}
+			}
+		});
+
+		addCourse.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				EditText taskName = (EditText) dialog.findViewById(R.id.todo_add_task_task_name);
+				EditText weight = (EditText) dialog.findViewById(R.id.todo_add_task_weight);
+				if (!taskName.getText().toString().isEmpty()) {
+					Task t = new Task();
+					Float setWeight = weight.getText().toString().isEmpty() ? -1 : Float.parseFloat(weight.getText()
+							.toString());
+					t.setWeight(setWeight);
+					t.setForWhatCourse(currentCoursesSpinner.getSelectedItem().toString());
+					t.setDueDate(dueDate.getText().toString());
+					t.setName(taskName.getText().toString());
+					t.setApproximatedGrade(-1);
+					t.setGrade(-1);
+					dbh.addTask(t);
+					taskListingAdapter.notifyDataSetChanged();
+					setAdapterFillTasks();
+					dialog.dismiss();
+				} else {
+					Toast.makeText(v.getContext(), "Please add a course code.", Toast.LENGTH_LONG).show();
+				}
+			}
+		});
+
 		dialog.show();
 	}
 }

@@ -56,7 +56,8 @@ public class TaskListingAdapter extends ArrayAdapter<Task> {
 		Task task = tasks.get(pos);
 		holder.taskName.setText(task.getName());
 		holder.courseCode.setText(task.getForWhatCourse());
-		holder.weight.setText(String.valueOf(task.getWeight()) + "%");
+		String setWeight = task.getWeight() == -1 ? "---" : String.valueOf(task.getWeight()) + "%";
+		holder.weight.setText(setWeight);
 		holder.date.setText(task.getDueDate());
 		// TODO: Implement days left
 		// holder.daysLeft.setText("5");

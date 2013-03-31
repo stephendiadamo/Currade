@@ -1,0 +1,96 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:text="@string/taskName" />
+
+    <EditText
+        android:id="@+id/todo_add_task_task_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/textView1"
+        android:ems="10"
+        android:inputType="text" >
+
+        <requestFocus />
+    </EditText>
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/todo_add_task_task_name"
+        android:text="@string/courseCode" />
+
+    <Spinner
+        android:id="@+id/todo_add_task_course_code_spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/textView2"
+        android:layout_toLeftOf="@+id/textView3" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/todo_add_task_task_name"
+        android:layout_marginRight="90dp"
+        android:text="@string/weight" />
+
+    <EditText
+        android:id="@+id/todo_add_task_weight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/todo_add_task_course_code_spinner"
+        android:layout_alignLeft="@+id/textView3"
+        android:ems="10"
+        android:inputType="number" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/todo_add_task_course_code_spinner"
+        android:text="@string/dueDate" />
+
+    <Button
+        android:id="@+id/todo_add_task_cancel"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/todo_add_task_done"
+        android:text="@string/cancel" />
+
+    <EditText
+        android:id="@+id/todo_add_task_due_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/todo_add_task_done"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/textView4"
+        android:ems="10"
+        android:inputType="date" />
+
+    <Button
+        android:id="@+id/todo_add_task_done"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/textView4"
+        android:layout_below="@+id/todo_add_task_due_date"
+        android:text="@string/done" />
+
+</RelativeLayout>
