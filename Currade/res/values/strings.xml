@@ -25,6 +25,7 @@
     <string name="weight">Weight</string>
     <string name="remove_task">Remove Task</string>
     <string name="edit_task">Edit Task</string>
+    <string name="edit_grade">Edit Grade</string>
     <string name="add_grade">Add Grade</string>
     <string name="grade">Grade:</string>
     <string name="finalString">Final</string>
