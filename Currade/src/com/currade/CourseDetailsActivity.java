@@ -10,6 +10,8 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -210,7 +212,28 @@ public class CourseDetailsActivity extends Activity {
 
 						Button addGradeDone = (Button) addGradeDialog.findViewById(R.id.addGradeDone);
 						Button addGradeCancel = (Button) addGradeDialog.findViewById(R.id.addGradeCancel);
+
 						final EditText gradeBox = (EditText) addGradeDialog.findViewById(R.id.addGradeGradeBox);
+						gradeBox.addTextChangedListener(new TextWatcher() {
+							@Override
+							public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+								String curText = gradeBox.getText().toString();
+								if (curText.length() > 6) {
+									gradeBox.setText(gradeBox.getText().subSequence(0, 5));
+								}
+							}
+
+							@Override
+							public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+								return;
+							}
+
+							@Override
+							public void afterTextChanged(Editable s) {
+							}
+						});
+
 						final RadioGroup whatToDo = (RadioGroup) addGradeDialog.findViewById(R.id.addGradeRadioGroup);
 						whatToDo.check(R.id.addGradeFinalRadio);
 						gradeBox.setText("");
@@ -358,9 +381,15 @@ public class CourseDetailsActivity extends Activity {
 					totalPercentage += t.getWeight();
 				}
 			}
-			float maxMark = (100 - totalPercentage) + (grade / totalPercentage) * (totalPercentage / 100);
+			float maxMark;
+			if (totalPercentage != 0) {
+				maxMark = (100 - totalPercentage) + (grade / totalPercentage) * (totalPercentage / 100);
+				course.setCurrentMark(grade / totalPercentage);
+			} else {
+				maxMark = 0;
+				course.setCurrentMark(0);
+			}
 			float minMark = (grade / 100);
-			course.setCurrentMark(grade / totalPercentage);
 			course.setCurrentMaxMark(maxMark);
 			course.setCurrentMinMark(minMark);
 		} else {

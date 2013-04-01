@@ -13,11 +13,12 @@
 
     <EditText
         android:id="@+id/addGradeGradeBox"
-        android:layout_width="75dp"
+        android:layout_width="85dp"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:ems="10"
+        android:maxLength="6"
         android:inputType="numberDecimal" />
 
     <RadioGroup

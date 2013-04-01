@@ -11,7 +11,6 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
-import com.currade.objects.Course;
 import com.currade.objects.Task;
 
 public class TaskListingAdapter extends ArrayAdapter<Task> {

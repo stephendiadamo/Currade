@@ -129,7 +129,12 @@ public class Main extends FragmentActivity implements ActionBar.TabListener {
 		case R.id.task_page_finish_task:
 			clearSelectedTasks();
 			break;
-
+		case R.id.task_page_view_monthly:
+			Toast.makeText(this, "View Monthly", Toast.LENGTH_LONG).show();
+			break;
+		case R.id.task_page_view_weekly:
+			Toast.makeText(this, "View Weekly", Toast.LENGTH_LONG).show();
+			break;
 		}
 		return true;
 
@@ -144,8 +149,6 @@ public class Main extends FragmentActivity implements ActionBar.TabListener {
 
 	@Override
 	public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-		// When the given tab is selected, switch to the corresponding page in
-		// the ViewPager.
 		mViewPager.setCurrentItem(tab.getPosition());
 	}
 
@@ -395,7 +398,6 @@ public class Main extends FragmentActivity implements ActionBar.TabListener {
 				}
 			}
 		});
-
 		dialog.show();
 	}
 }
