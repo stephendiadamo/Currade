@@ -142,9 +142,14 @@ public class Main extends FragmentActivity implements ActionBar.TabListener {
 
 	private void clearSelectedTasks() {
 
-		// TODO: Implement this
-		// http://www.mysamplecode.com/2012/07/android-listview-checkbox-example.html
-
+		List<Task> tlist = taskListingAdapter.tasks;
+		for (Task t : tlist) {
+			if (t.isSelected) {
+				dbh.deleteTask(t);
+			}
+		}
+		taskListingAdapter.notifyDataSetChanged();
+		setAdapterFillTasks();
 	}
 
 	@Override

@@ -9,6 +9,7 @@ public class Task {
 	private float weight;
 	private float grade;
 	private float approximatedGrade;
+	public boolean isSelected;
 
 	public Task() {
 		super();

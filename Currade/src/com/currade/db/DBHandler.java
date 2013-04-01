@@ -14,7 +14,7 @@ import com.currade.objects.Task;
 
 public class DBHandler extends SQLiteOpenHelper {
 
-	private static final int DATABASE_VERSION = 4;
+	private static final int DATABASE_VERSION = 7;
 	private static final String DATABASE_NAME = "coursesManager";
 
 	// Tables
@@ -37,6 +37,7 @@ public class DBHandler extends SQLiteOpenHelper {
 	private static final String TASK_WEIGHT = "weight";
 	private static final String TASK_GRADE = "grade";
 	private static final String TASK_APROX_GRADE = "aprox_grade";
+	private static final String TASK_IS_DONE = "completed";
 
 	public DBHandler(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -50,7 +51,7 @@ public class DBHandler extends SQLiteOpenHelper {
 
 		String CREATE_TASK_TABLE = "CREATE TABLE " + TABLE_TASKS + "(" + KEY_TASK_ID + " INTEGER PRIMARY KEY,"
 				+ TASK_NAME + " TEXT," + TASK_DUE_DATE + " TEXT," + TASK_FOR_WHAT_COURSE + " TEXT," + TASK_WEIGHT
-				+ " REAL," + TASK_GRADE + " REAL," + TASK_APROX_GRADE + " REAL" + ")";
+				+ " REAL," + TASK_GRADE + " REAL," + TASK_APROX_GRADE + " REAL," + TASK_IS_DONE + " TEXT" + ")";
 
 		db.execSQL(CREATE_COURSE_TABLE);
 		db.execSQL(CREATE_TASK_TABLE);
@@ -62,6 +63,8 @@ public class DBHandler extends SQLiteOpenHelper {
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_TASKS);
 		onCreate(db);
 	}
+
+	// COURSE FUNCTIONS
 
 	public void addCourse(Course course) {
 		SQLiteDatabase db = this.getWritableDatabase();
@@ -145,6 +148,8 @@ public class DBHandler extends SQLiteOpenHelper {
 		db.close();
 	}
 
+	// TASK FUNCTIONS
+
 	public void addTask(Task task) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		ContentValues values = new ContentValues();
@@ -154,6 +159,7 @@ public class DBHandler extends SQLiteOpenHelper {
 		values.put(TASK_WEIGHT, task.getWeight());
 		values.put(TASK_GRADE, task.getGrade());
 		values.put(TASK_APROX_GRADE, task.getApproximatedGrade());
+		values.put(TASK_IS_DONE, Boolean.toString(task.isSelected));
 		db.insert(TABLE_TASKS, null, values);
 		db.close();
 	}
@@ -161,7 +167,7 @@ public class DBHandler extends SQLiteOpenHelper {
 	public Task getTask(int id) {
 		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor cursor = db.query(TABLE_TASKS, new String[] { KEY_TASK_ID, TASK_NAME, TASK_DUE_DATE,
-				TASK_FOR_WHAT_COURSE, TASK_WEIGHT, TASK_GRADE, TASK_APROX_GRADE }, KEY_TASK_ID + " = ?",
+				TASK_FOR_WHAT_COURSE, TASK_WEIGHT, TASK_GRADE, TASK_APROX_GRADE, TASK_IS_DONE }, KEY_TASK_ID + " = ?",
 				new String[] { String.valueOf(id) }, null, null, null, null);
 		if (cursor != null) {
 			cursor.moveToFirst();
@@ -175,6 +181,7 @@ public class DBHandler extends SQLiteOpenHelper {
 		task.setWeight(cursor.getFloat(4));
 		task.setGrade(cursor.getFloat(5));
 		task.setApproximatedGrade(cursor.getFloat(6));
+		task.isSelected = cursor.getString(7).equals("true");
 		cursor.close();
 		db.close();
 		return task;
@@ -196,6 +203,7 @@ public class DBHandler extends SQLiteOpenHelper {
 				task.setWeight(cursor.getFloat(4));
 				task.setGrade(cursor.getFloat(5));
 				task.setApproximatedGrade(cursor.getFloat(6));
+				task.isSelected = cursor.getString(7).equals("true");
 				taskList.add(task);
 			} while (cursor.moveToNext());
 		}
@@ -222,6 +230,7 @@ public class DBHandler extends SQLiteOpenHelper {
 		values.put(TASK_WEIGHT, task.getWeight());
 		values.put(TASK_GRADE, task.getGrade());
 		values.put(TASK_APROX_GRADE, task.getApproximatedGrade());
+		values.put(TASK_IS_DONE, Boolean.toString(task.isSelected));
 		int retVal = db
 				.update(TABLE_TASKS, values, KEY_TASK_ID + " = ?", new String[] { String.valueOf(task.getId()) });
 		db.close();
@@ -251,6 +260,7 @@ public class DBHandler extends SQLiteOpenHelper {
 				task.setWeight(cursor.getFloat(4));
 				task.setGrade(cursor.getFloat(5));
 				task.setApproximatedGrade(cursor.getFloat(6));
+				task.isSelected = cursor.getString(7).equals("true");
 				taskList.add(task);
 			} while (cursor.moveToNext());
 		}
